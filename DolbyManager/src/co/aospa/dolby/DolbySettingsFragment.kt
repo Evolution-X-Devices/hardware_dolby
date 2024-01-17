@@ -17,13 +17,13 @@ import android.widget.Toast
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceChangeListener
-import androidx.preference.PreferenceFragment
+import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import co.aospa.dolby.DolbyConstants.Companion.dlog
 import co.aospa.dolby.R
 import com.android.settingslib.widget.MainSwitchPreference
 
-class DolbySettingsFragment : PreferenceFragment(),
+class DolbySettingsFragment : PreferenceFragmentCompat(),
     OnPreferenceChangeListener, CompoundButton.OnCheckedChangeListener {
 
     private val switchBar by lazy {
@@ -57,8 +57,8 @@ class DolbySettingsFragment : PreferenceFragment(),
         findPreference<Preference>(DolbyConstants.PREF_RESET)!!
     }
 
-    private val dolbyController by lazy { DolbyController.getInstance(context) }
-    private val audioManager by lazy { context.getSystemService(AudioManager::class.java) }
+    private val dolbyController by lazy { DolbyController.getInstance(requireContext()) }
+    private val audioManager by lazy { requireContext().getSystemService(AudioManager::class.java) }
     private val handler = Handler()
 
     private var isOnSpeaker = true
@@ -83,12 +83,13 @@ class DolbySettingsFragment : PreferenceFragment(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         dlog(TAG, "onCreatePreferences")
-        addPreferencesFromResource(R.xml.dolby_settings)
 
         val profile = dolbyController.profile
-        preferenceManager.preferenceDataStore = DolbyPreferenceStore(context).also {
+        preferenceManager.preferenceDataStore = DolbyPreferenceStore(requireContext()).also {
             it.profile = profile
         }
+
+        setPreferencesFromResource(R.xml.dolby_settings, rootKey)
 
         val dsOn = dolbyController.dsOn
         switchBar.addOnSwitchChangeListener(this)
@@ -101,7 +102,7 @@ class DolbySettingsFragment : PreferenceFragment(),
                 summary = "%s"
                 value = profile.toString()
             } else {
-                summary = context.getString(R.string.dolby_unknown)
+                summary = getString(R.string.dolby_unknown)
             }
         }
 
@@ -116,8 +117,8 @@ class DolbySettingsFragment : PreferenceFragment(),
             dolbyController.resetProfileSpecificSettings()
             updateProfileSpecificPrefs()
             Toast.makeText(
-                context,
-                context.getString(R.string.dolby_reset_profile_toast, profilePref.summary),
+                requireContext(),
+                getString(R.string.dolby_reset_profile_toast, profilePref.summary),
                 Toast.LENGTH_SHORT
             ).show()
             true
@@ -191,8 +192,8 @@ class DolbySettingsFragment : PreferenceFragment(),
     }
 
     private fun updateProfileSpecificPrefs() {
-        val unknownRes = context.getString(R.string.dolby_unknown)
-        val headphoneRes = context.getString(R.string.dolby_connect_headphones)
+        val unknownRes = getString(R.string.dolby_unknown)
+        val headphoneRes = getString(R.string.dolby_connect_headphones)
         val dsOn = dolbyController.dsOn
         val currentProfile = dolbyController.profile
 
