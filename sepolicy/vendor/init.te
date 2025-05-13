@@ -1,0 +1,2 @@
+# dms
+allow init hal_dms_default:process { siginh rlimitinh transition };
