@@ -12,6 +12,7 @@
         <version>1.0</version>
         <interface>
             <name>IComponentStore</name>
+            <instance>dolby</instance>
             <instance>default1</instance>
         </interface>
     </hal>
