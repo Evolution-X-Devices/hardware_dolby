@@ -34,6 +34,7 @@ DEVICE_MANIFEST_FILE += \
 PRODUCT_PACKAGES += \
     libavservices_minijail.vendor \
     libcodec2_hidl@1.2.vendor \
+    libstagefright_foundation-v33 \
     libcodec2_soft_common.vendor
 
 # Configs
