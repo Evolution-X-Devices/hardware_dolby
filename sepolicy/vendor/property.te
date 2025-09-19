@@ -1,0 +1,8 @@
+type vendor_dolby_prop, property_type, vendor_property_type;
+
+# Разрешить запись (setprop) только в ваш property type
+set_prop(hal_dms_default, vendor_dolby_prop)
+
+# Если DMS читает общие аудио-свойства, можно добавить чтение:
+get_prop(hal_dms_default, vendor_audio_prop)
+get_prop(hal_dms_default, vendor_default_prop)
