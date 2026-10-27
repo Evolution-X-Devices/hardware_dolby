@@ -5,8 +5,16 @@
 -->
 <resources>
 
+    <!-- Expressive UI -->
+    <string name="dolby_credits">Kredit</string>
+    <string name="dolby_more_options">Opsi lainnya</string>
+    <string name="dolby_save_preset">Simpan preset</string>
+    <string name="dolby_equalizer_summary">Bentuk suara Anda, frekuensi demi frekuensi</string>
+    <string name="dolby_advanced_summary">Sempurnakan detail pengalaman mendengarkan Anda</string>
+
     <!-- Dolby Atmos -->
     <string name="dolby_title">Dolby Atmos</string>
+    <string name="dolby_summary">Pengalaman audio yang imersif</string>
     <string name="dolby_enable">Gunakan Dolby Atmos</string>
     <string name="dolby_profile_title">Pilih profil</string>
     <string name="dolby_preset">Equalizer</string>
@@ -50,6 +58,7 @@
 
     <!-- Dolby profiles -->
     <string name="dolby_profile_dynamic">Dinamis</string>
+    <string name="dolby_profile_dynamic_summary">Menyesuaikan secara otomatis dengan audio Anda</string>
     <string name="dolby_profile_video">Film/Video</string>
     <string name="dolby_profile_music">Musik</string>
     <string name="dolby_profile_game">Permainan</string>
@@ -107,6 +116,10 @@
     <string name="dolby_balanced">Seimbang</string>
     <string name="dolby_warm">Hangat</string>
     <string name="dolby_detailed">Detail</string>
+    <string name="dolby_ieq_off_summary">Gunakan profil saat ini tanpa equalizer cerdas.</string>
+    <string name="dolby_ieq_detailed_summary">Tampilkan detail halus dan kejernihan.</string>
+    <string name="dolby_ieq_balanced_summary">Jaga keseimbangan nada rendah, menengah, dan tinggi.</string>
+    <string name="dolby_ieq_warm_summary">Beri suara Anda karakter yang lebih lembut dan hangat.</string>
 
     <!-- Per-App Audio Profiles -->
     <string name="app_profiles_title">Profil Audio Per Aplikasi</string>
@@ -171,4 +184,24 @@
     <string name="dolby_mid_enhancer">Peningkat mid</string>
     <string name="dolby_mid_level">Tingkat mid</string>
     <string name="dolby_mid_enhancer_summary">Meningkatkan frekuensi menengah untuk vokal dan instrumen yang lebih jernih</string>
+
+     <!-- Per-device state memory -->
+    <string name="device_state_memory_title">Memori audio per perangkat</string>
+    <string name="device_state_memory_summary">Mengingat pengaturan Dolby untuk setiap perangkat audio (headphone, speaker, Bluetooth)</string>
+    <string name="device_state_memory_conflict_toast">Profil per aplikasi dinonaktifkan — tidak kompatibel dengan memori per perangkat</string>
+    <string name="device_state_memory_conflict_summary">⚠ Dinonaktifkan saat memori per perangkat aktif — terjadi konflik</string>
+    <string name="app_profile_conflict_toast">Memori per perangkat dinonaktifkan — tidak kompatibel dengan profil per aplikasi</string>
+    <string name="app_profile_conflict_summary">⚠ Dinonaktifkan saat profil per aplikasi aktif — terjadi konflik</string>
+    <string name="device_state_memory_section_title">Memori Perangkat Audio</string>
+
+     <!-- AutoEQ Profile -->
+    <string name="dolby_autoeq_title">Terapkan Profil AutoEQ</string>
+    <string name="dolby_autoeq_applied">AutoEQ diterapkan untuk %1$s</string>
+    <string name="dolby_autoeq_preset_name">AutoEQ: %1$s</string>
+    <string name="dolby_autoeq_search_hint">Cari 8.000+ profil...</string>
+    <string name="dolby_autoeq_currently_applied">Saat Ini Diterapkan</string>
+    <string name="dolby_autoeq_clear">Hapus pencarian</string>
+    <string name="dolby_autoeq_search">Cari</string>
+    <string name="dolby_autoeq_active">Profil aktif</string>
+    <string name="dolby_autoeq_selected">Profil terpilih</string>
 </resources>
