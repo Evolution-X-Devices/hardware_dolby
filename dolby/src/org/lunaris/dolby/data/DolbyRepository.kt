@@ -169,7 +169,6 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
     fun getCurrentProfile(): Int {
         return try {
             checkEffect()
-            restoreSavedProfileIfNeeded()
             dolbyEffect.profile
         } catch (e: Exception) {
             DolbyConstants.dlog(TAG, "Error getting current profile: ${e.message}")
@@ -238,6 +237,8 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
     }
 
     fun getBassEnhancerEnabled(profile: Int): Boolean {
+        val p = getProfilePrefs(profile)
+        if (p.contains(DolbyConstants.PREF_BASS)) return p.getBoolean(DolbyConstants.PREF_BASS, false)
         return try {
             dolbyEffect.getDapParameterBool(DsParam.BASS_ENHANCER_ENABLE, profile)
         } catch (e: Exception) {
@@ -424,6 +425,8 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
 
     fun getVolumeLevelerEnabled(profile: Int): Boolean {
         if (!volumeLevelerSupported) return false
+        val p = getProfilePrefs(profile)
+        if (p.contains(DolbyConstants.PREF_VOLUME)) return p.getBoolean(DolbyConstants.PREF_VOLUME, false)
         return try {
             dolbyEffect.getDapParameterBool(DsParam.VOLUME_LEVELER_ENABLE, profile)
         } catch (e: Exception) {
@@ -445,6 +448,8 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
     }
 
     fun getIeqPreset(profile: Int): Int {
+        val p = getProfilePrefs(profile)
+        p.getString(DolbyConstants.PREF_IEQ, null)?.toIntOrNull()?.let { return it }
         return try {
             dolbyEffect.getDapParameterInt(DsParam.IEQ_PRESET, profile)
         } catch (e: Exception) {
@@ -466,6 +471,8 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
     }
 
     fun getHeadphoneVirtualizerEnabled(profile: Int): Boolean {
+        val p = getProfilePrefs(profile)
+        if (p.contains(DolbyConstants.PREF_HP_VIRTUALIZER)) return p.getBoolean(DolbyConstants.PREF_HP_VIRTUALIZER, false)
         return try {
             dolbyEffect.getDapParameterBool(DsParam.HEADPHONE_VIRTUALIZER, profile)
         } catch (e: Exception) {
@@ -487,6 +494,8 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
     }
 
     fun getSpeakerVirtualizerEnabled(profile: Int): Boolean {
+        val p = getProfilePrefs(profile)
+        if (p.contains(DolbyConstants.PREF_SPK_VIRTUALIZER)) return p.getBoolean(DolbyConstants.PREF_SPK_VIRTUALIZER, false)
         return try {
             dolbyEffect.getDapParameterBool(DsParam.SPEAKER_VIRTUALIZER, profile)
         } catch (e: Exception) {
@@ -509,8 +518,12 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
 
     fun getStereoWideningAmount(profile: Int): Int {
         if (!stereoWideningSupported) return 0
+        val p = getProfilePrefs(profile)
+        if (p.contains(DolbyConstants.PREF_STEREO_WIDENING)) return p.getInt(DolbyConstants.PREF_STEREO_WIDENING, 32)
         return try {
-            dolbyEffect.getDapParameterInt(DsParam.STEREO_WIDENING_AMOUNT, profile)
+            val amount = dolbyEffect.getDapParameterInt(DsParam.STEREO_WIDENING_AMOUNT, profile)
+            p.edit().putInt(DolbyConstants.PREF_STEREO_WIDENING, amount).apply()
+            amount
         } catch (e: Exception) {
             DolbyConstants.dlog(TAG, "Error getting stereo widening: ${e.message}")
             32
@@ -530,6 +543,8 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
     }
 
     fun getDialogueEnhancerEnabled(profile: Int): Boolean {
+        val p = getProfilePrefs(profile)
+        if (p.contains(DolbyConstants.PREF_DIALOGUE)) return p.getBoolean(DolbyConstants.PREF_DIALOGUE, false)
         return try {
             dolbyEffect.getDapParameterBool(DsParam.DIALOGUE_ENHANCER_ENABLE, profile)
         } catch (e: Exception) {
@@ -551,6 +566,8 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
     }
 
     fun getDialogueEnhancerAmount(profile: Int): Int {
+        val p = getProfilePrefs(profile)
+        if (p.contains(DolbyConstants.PREF_DIALOGUE_AMOUNT)) return p.getInt(DolbyConstants.PREF_DIALOGUE_AMOUNT, 6)
         return try {
             dolbyEffect.getDapParameterInt(DsParam.DIALOGUE_ENHANCER_AMOUNT, profile)
         } catch (e: Exception) {
