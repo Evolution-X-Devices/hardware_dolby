@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3ExpressiveApi::class)
+
 package org.lunaris.dolby.ui.screens
 
 import androidx.compose.animation.*
@@ -23,7 +25,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
@@ -50,8 +51,7 @@ fun AppProfileScreen(
                 title = { 
                     Text(
                         stringResource(R.string.app_profiles_title),
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.headlineMediumEmphasized,
                         color = MaterialTheme.colorScheme.onSurface
                     ) 
                 },
@@ -123,8 +123,8 @@ fun AppProfileScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp),
-                        shape = MaterialTheme.shapes.large,
-                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                        shape = MaterialTheme.shapes.extraLarge,
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest
                     ) {
                         Row(
                             modifier = Modifier
@@ -149,12 +149,13 @@ fun AppProfileScreen(
                                 },
                                 modifier = Modifier.weight(1f),
                                 colors = TextFieldDefaults.colors(
-                                    focusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                                    unfocusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                                    focusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
-                                    unfocusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
+                                    focusedContainerColor = Color.Transparent,
+                                    unfocusedContainerColor = Color.Transparent,
+                                    focusedIndicatorColor = Color.Transparent,
+                                    unfocusedIndicatorColor = Color.Transparent,
                                     focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+                                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                                    cursorColor = MaterialTheme.colorScheme.primary
                                 ),
                                 singleLine = true
                             )
@@ -243,7 +244,7 @@ fun AppProfileScreen(
                         )
                         Button(
                             onClick = { viewModel.loadApps() },
-                            shape = MaterialTheme.shapes.medium
+                            shape = MaterialTheme.shapes.large
                         ) {
                             Text(stringResource(R.string.app_profiles_retry))
                         }
@@ -276,16 +277,24 @@ private fun AppProfileItem(
     val profiles = stringArrayResource(R.array.dolby_profile_entries)
     val profileValues = stringArrayResource(R.array.dolby_profile_values)
 
+    val isAssigned = app.assignedProfile >= 0
+
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large,
+        shape = if (isAssigned) MaterialTheme.shapes.extraLarge else MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(
-            containerColor = if (app.assignedProfile >= 0) {
-                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f)
+            containerColor = if (isAssigned) {
+                MaterialTheme.colorScheme.secondaryContainer
             } else {
-                MaterialTheme.colorScheme.surfaceBright
+                MaterialTheme.colorScheme.surfaceContainerLow
+            },
+            contentColor = if (isAssigned) {
+                MaterialTheme.colorScheme.onSecondaryContainer
+            } else {
+                MaterialTheme.colorScheme.onSurface
             }
-        )
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
             modifier = Modifier
@@ -306,14 +315,17 @@ private fun AppProfileItem(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = app.appName,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyLargeEmphasized,
+                    color = if (isAssigned) {
+                        MaterialTheme.colorScheme.onSecondaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    },
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(2.dp))
-                
+
                 val currentProfileName = if (app.assignedProfile >= 0) {
                     val index = profileValues.indexOfFirst { it.toInt() == app.assignedProfile }
                     if (index >= 0) profiles[index] else "Default"
@@ -324,8 +336,8 @@ private fun AppProfileItem(
                 Text(
                     text = currentProfileName,
                     style = MaterialTheme.typography.bodySmall,
-                    color = if (app.assignedProfile >= 0) {
-                        MaterialTheme.colorScheme.primary
+                    color = if (isAssigned) {
+                        MaterialTheme.colorScheme.onSecondaryContainer
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant
                     }
@@ -335,7 +347,16 @@ private fun AppProfileItem(
                 Surface(
                     onClick = { expanded = true },
                     shape = MaterialTheme.shapes.medium,
-                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                    color = if (isAssigned) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.surfaceContainerHighest
+                    },
+                    contentColor = if (isAssigned) {
+                        MaterialTheme.colorScheme.onPrimary
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    }
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -343,15 +364,13 @@ private fun AppProfileItem(
                     ) {
                         Text(
                             text = stringResource(R.string.app_profiles_change),
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onSurface
+                            style = MaterialTheme.typography.labelLarge
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Icon(
                             Icons.Default.ArrowDropDown,
                             contentDescription = null,
-                            modifier = Modifier.size(20.dp),
-                            tint = MaterialTheme.colorScheme.onSurface
+                            modifier = Modifier.size(20.dp)
                         )
                     }
                 }
