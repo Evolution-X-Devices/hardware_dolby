@@ -1,0 +1,3 @@
+# DEBUG ONLY. If the first boot shows avc denials for the DMS HAL, copy this to
+# sepolicy/vendor/permissive.te, rebuild, collect `dmesg | grep avc` and fix the rules.
+permissive hal_aidl_dms_default;
