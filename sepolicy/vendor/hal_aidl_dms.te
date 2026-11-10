@@ -16,3 +16,7 @@ init_daemon_domain(hal_aidl_dms_default)
 
 allow hal_aidl_dms_default vendor_dolby_file:dir rw_dir_perms;
 allow hal_aidl_dms_default vendor_dolby_file:file create_file_perms;
+
+# Read the DAX configs under /vendor/etc/dolby
+allow hal_aidl_dms_default vendor_configs_file:dir r_dir_perms;
+allow hal_aidl_dms_default vendor_configs_file:file r_file_perms;
