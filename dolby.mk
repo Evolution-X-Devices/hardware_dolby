@@ -26,18 +26,21 @@ AUDIO_FEATURE_ENABLED_DS2_DOLBY_DAP := true
 
 # SEPolicy
 BOARD_VENDOR_SEPOLICY_DIRS += $(DOLBY_PATH)/sepolicy/vendor
-    
+
+# Framework compatibility matrix
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
+    $(DOLBY_PATH)/vintf/dolby_framework_matrix.xml
+
 # Configs
 PRODUCT_COPY_FILES += \
-    $(DOLBY_PATH)/configs/dax-default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default.xml \
-    $(DOLBY_PATH)/configs/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml
+    $(DOLBY_PATH)/configs/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml \
+    $(DOLBY_PATH)/proprietary/vendor/etc/dolby/dax-default-spatializer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default-spatializer.xml \
+    $(DOLBY_PATH)/proprietary/vendor/etc/dolby/dax-default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default.xml \
+    $(DOLBY_PATH)/proprietary/vendor/etc/dolby/dax-default_retin.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default_retin.xml
 
 # Dolby VNDK libs
 PRODUCT_PACKAGES += \
     libstagefright_foundation-v33
-
-PRODUCT_PACKAGES += \
-    libshim_dolby
 
 # Init
 PRODUCT_PACKAGES += \
@@ -65,7 +68,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Dolby Spatial Audio Proprietary blobs
 PRODUCT_PACKAGES += \
     libspatializerparamstorage \
-    libswspatializer
+    libswspatializeraidl
     
 
 # Media (C2)
@@ -86,7 +89,7 @@ PRODUCT_VENDOR_PROPERTIES += \
 
 # Dolby Props
 PRODUCT_VENDOR_PROPERTIES += \
-    ro.vendor.dolby.dax.version=DAX3_3.7.0.8_r1 \
+    ro.vendor.dolby.dax.version=DAX3_3.12.0.8_r1 \
     vendor.audio.dolby.ds2.hardbypass=false \
     vendor.audio.dolby.ds2.enabled=false
 
@@ -99,55 +102,41 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     XiaomiDolby
 
-# Dolby Proprietary blobs
+# Dolby DMS (AIDL)
 PRODUCT_COPY_FILES += \
-    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.hardware.dms@2.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.hardware.dms@2.0-service.rc
+    $(DOLBY_PATH)/proprietary/vendor/etc/init/dms-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/dms-service.rc
 
 PRODUCT_PACKAGES += \
     libdapparamstorage \
     libdlbdsservice \
     libdlbpreg \
-    vendor.dolby.hardware.dms@2.0-impl \
+    libdmshal \
+    vendor.dolby.dms-V1-ndk \
     vendor.dolby.hardware.dms@2.0 \
-    vendor.dolby.hardware.dms@2.0-service
+    dms-service.xml \
+    vendor.dolby.dms.service
 
 # Codec2 (Dolby)
 PRODUCT_COPY_FILES += \
-    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.media.c2@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.media.c2@1.0-service.rc
+    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.media.c2-default-service-dax.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.media.c2-default-service-dax.rc
 
 PRODUCT_PACKAGES += \
     libcodec2_soft_ac4dec \
     libcodec2_soft_ddpdec \
     libcodec2_store_dolby \
     libdeccfg \
-    vendor.dolby.media.c2@1.0-service
+    vendor.dolby.media.c2-default-service-dax.xml \
+    vendor.dolby.media.c2-default-service-dax
+
+# Versioned AIDL libraries linked by the Dolby SoundFX blobs
+PRODUCT_PACKAGES += \
+    android.hardware.audio.effect-V2-ndk:64 \
+    android.hardware.common-V2-ndk:64 \
+    android.hardware.common.fmq-V1-ndk:64
 
 # Dolby SoundFX Blobs
 PRODUCT_PACKAGES += \
-    libdlbvol \
-    libhwdap \
-    libswgamedap \
-    libswvqe \
-    libswdap
-
-# Dolby vision Proprietary blobs
-PRODUCT_COPY_FILES += \
-    $(DOLBY_PATH)/proprietary/vendor/etc/dolby_vision.cfg:$(TARGET_COPY_OUT_VENDOR)/etc/dolby_vision.cfg \
-    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolbyvision.media.c2@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolbyvision.media.c2@1.0-service.rc
-
-PRODUCT_PACKAGES += \
-    c2.dolby.avc.dec \
-    c2.dolby.avc.sec.dec \
-    c2.dolby.client \
-    c2.dolby.egl \
-    c2.dolby.hevc.dec \
-    c2.dolby.hevc.sec.dec \
-    c2.dolby.store \
-    libdolbyottcameracontrol \
-    libdolbyvision \
-    dolbycodec2
-
-# Shim
-PRODUCT_PACKAGES += \
-    libcodec2_hidl_shim.vendor
-
+    libaudio_aidl_conversion_common_ndk_prebuilt \
+    libdlbvolaidl \
+    libswdapaidl \
+    libswgamedapaidl

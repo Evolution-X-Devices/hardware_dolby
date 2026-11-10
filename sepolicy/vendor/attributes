@@ -1,3 +1,6 @@
-attribute hal_dms;
-attribute hal_dms_client;
-attribute hal_dms_server;
+attribute hal_aidl_dms;
+attribute hal_aidl_dms_client;
+attribute hal_aidl_dms_server;
+expandattribute hal_aidl_dms true;
+expandattribute hal_aidl_dms_client true;
+expandattribute hal_aidl_dms_server false;
