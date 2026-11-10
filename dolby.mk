@@ -130,6 +130,7 @@ PRODUCT_PACKAGES += \
 
 # Versioned AIDL libraries linked by the Dolby SoundFX blobs
 PRODUCT_PACKAGES += \
+    android.hardware.audio.common-V3-ndk:64 \
     android.hardware.audio.effect-V2-ndk:64 \
     android.hardware.common-V2-ndk:64 \
     android.hardware.common.fmq-V1-ndk:64
