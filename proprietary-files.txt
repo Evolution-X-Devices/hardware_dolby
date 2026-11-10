@@ -1,0 +1,34 @@
+## All proprietary files from this list, unless pinned and noted otherwise,
+## are from Motorola Moto g57 power (mumba) (17 A171WAAH.31-9-4).
+## Pinned entries (-file|sha1) are the Android 16 mumba blobs.
+##
+## Not listed on purpose:
+## - vendor/etc/media_codecs_dolby_audio.xml: kept in configs/ (Atmos decoders only)
+## - vendor/etc/dolby/dax-moto_*.xml, vendor/lib64/liboem_specific.so: Moto specific, unused
+
+# Dolby
+vendor/bin/hw/vendor.dolby.dms.service
+vendor/bin/hw/vendor.dolby.media.c2-default-service-dax
+vendor/etc/dolby/dax-default-spatializer.xml
+vendor/etc/dolby/dax-default.xml
+vendor/etc/dolby/dax-default_retin.xml
+vendor/etc/init/dms-service.rc
+vendor/etc/init/vendor.dolby.media.c2-default-service-dax.rc
+vendor/etc/vintf/manifest/dms-service.xml
+vendor/etc/vintf/manifest/vendor.dolby.media.c2-default-service-dax.xml
+vendor/lib64/libaudio_aidl_conversion_common_ndk.so:vendor/lib64/libaudio_aidl_conversion_common_ndk_prebuilt.so;DISABLE_DEPS;FIX_SONAME
+vendor/lib64/libcodec2_soft_ac4dec.so
+vendor/lib64/libcodec2_soft_ddpdec.so
+vendor/lib64/libcodec2_store_dolby.so
+vendor/lib64/libdapparamstorage.so
+vendor/lib64/libdeccfg.so
+vendor/lib64/libdlbdsservice.so
+vendor/lib64/libdlbpreg.so
+vendor/lib64/libdmshal.so
+-vendor/lib64/libspatializerparamstorage.so|05fd3fda9d6fd165a5ecdddc302f68bb5fc4ab4d
+vendor/lib64/soundfx/libdlbvolaidl.so;DISABLE_DEPS
+vendor/lib64/soundfx/libswdapaidl.so;DISABLE_DEPS
+vendor/lib64/soundfx/libswgamedapaidl.so;DISABLE_DEPS
+-vendor/lib64/soundfx/libswspatializeraidl.so;DISABLE_DEPS|9db293a7f465df4b4e7081a8a31dededa4c2fa64
+vendor/lib64/vendor.dolby.dms-V1-ndk.so
+vendor/lib64/vendor.dolby.hardware.dms@2.0.so
