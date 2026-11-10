@@ -26,6 +26,9 @@ cc_prebuilt_library_shared {
             srcs: [
                 "proprietary/vendor/lib64/libaudio_aidl_conversion_common_ndk_prebuilt.so",
             ],
+            shared_libs: [
+                "libdolby_mimetype_shim",
+            ],
         },
     },
     compile_multilib: "64",

@@ -13,3 +13,10 @@ cc_library_shared {
     ],
     vendor_available: true,
 }
+
+cc_library_shared {
+    name: "libdolby_mimetype_shim",
+    srcs: ["libdolby_mimetype_shim/libdolby_mimetype_shim.cpp"],
+    compile_multilib: "64",
+    soc_specific: true,
+}
