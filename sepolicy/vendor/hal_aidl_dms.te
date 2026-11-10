@@ -10,6 +10,10 @@ binder_use(hal_aidl_dms_server)
 
 get_prop(hal_aidl_dms_default, vendor_dolby_prop)
 
+# DsContextManager reads persist.vendor.audio.dolby.tws_tuning, which is
+# labelled vendor_audio_prop
+get_prop(hal_aidl_dms_default, vendor_audio_prop)
+
 hal_attribute_service(hal_aidl_dms, hal_aidl_dms_service)
 
 init_daemon_domain(hal_aidl_dms_default)
