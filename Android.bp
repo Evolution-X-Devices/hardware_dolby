@@ -552,3 +552,212 @@ cc_prebuilt_binary {
     relative_install_path: "hw",
     soc_specific: true,
 }
+
+cc_prebuilt_library_shared {
+    name: "libstagefright_foundation-atmos",
+    owner: "dolby",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/vendor/lib64/libstagefright_foundation-atmos.so",
+            ],
+            shared_libs: [
+                "libbinder",
+                "libutils",
+                "libcutils",
+                "liblog",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libstagefright_foundation-swiitchoff",
+    owner: "xiaomi",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/vendor/lib64/libstagefright_foundation-swiitchoff.so",
+            ],
+            shared_libs: [
+                "libbinder",
+                "libutils",
+                "libcutils",
+                "liblog",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libcodec2_aidl-dolby",
+    owner: "dolby",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/vendor/lib64/libcodec2_aidl-dolby.so",
+            ],
+            shared_libs: [
+                "server_configurable_flags",
+                "libaconfig_storage_read_api_cc",
+                "android.hardware.common-V2-ndk",
+                "android.hardware.media.bufferpool2-V2-ndk",
+                "android.hardware.media.c2-V1-ndk",
+                "libbase",
+                "libbinder_ndk",
+                "libcodec2",
+                "libcodec2_hal_common-aidl",
+                "libcodec2_vndk-aidl",
+                "libcutils",
+                "libhidlbase",
+                "liblog",
+                "libnativewindow",
+                "libmediandk",
+                "libstagefright_aidl_bufferpool2",
+                "libstagefright_bufferpool@2.0.1",
+                "libstagefright_foundation-atmos",
+                "libui",
+                "libutils",
+                "libcodec2_hidl_plugin-dolby",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libcodec2_hal_common-aidl",
+    owner: "dolby",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/vendor/lib64/libcodec2_hal_common-aidl.so",
+            ],
+            shared_libs: [
+                "libbase",
+                "libcodec2",
+                "libcodec2_vndk-aidl",
+                "liblog",
+                "libstagefright_foundation-atmos",
+                "server_configurable_flags",
+                "libaconfig_storage_read_api_cc",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libcodec2_hidl_plugin-dolby",
+    owner: "dolby",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/vendor/lib64/libcodec2_hidl_plugin-dolby.so",
+            ],
+            shared_libs: [
+                "libbase",
+                "libcodec2",
+                "libcodec2_vndk-aidl",
+                "liblog",
+                "libutils",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libcodec2_vndk-aidl",
+    owner: "dolby",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/vendor/lib64/libcodec2_vndk-aidl.so",
+            ],
+            shared_libs: [
+                "server_configurable_flags",
+                "libaconfig_storage_read_api_cc",
+                "android.hardware.graphics.bufferqueue@2.0",
+                "android.hardware.graphics.common@1.2",
+                "android.hardware.common-V2-ndk",
+                "android.hardware.common.fmq-V1-ndk",
+                "android.hardware.media.bufferpool@2.0",
+                "android.hardware.media.bufferpool2-V2-ndk",
+                "android.hardware.media.c2-V1-ndk",
+                "libbase",
+                "libbinder_ndk",
+                "libcutils",
+                "libdmabufheap",
+                "libfmq",
+                "libgralloctypes",
+                "libhidlbase",
+                "libion",
+                "liblog",
+                "libnativewindow",
+                "libstagefright_foundation-atmos",
+                "libstagefright_bufferpool@2.0.1",
+                "libstagefright_aidl_bufferpool2",
+                "libui",
+                "libutils",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    soc_specific: true,
+}
