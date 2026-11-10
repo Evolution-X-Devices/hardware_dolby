@@ -1,2 +1,5 @@
 hal_client_domain(hal_audio_default, hal_aidl_dms)
 get_prop(hal_audio_default, vendor_dolby_prop)
+# The Dolby effect libraries run inside the audio HAL and read the data the DMS keeps
+allow hal_audio_default vendor_dolby_file:dir r_dir_perms;
+allow hal_audio_default vendor_dolby_file:file r_file_perms;
