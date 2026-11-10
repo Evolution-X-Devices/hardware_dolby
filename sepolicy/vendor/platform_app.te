@@ -1,3 +1,6 @@
 hal_client_domain(platform_app, hal_aidl_dms)
 get_prop(platform_app, vendor_dolby_prop)
 get_prop(platform_app, audio_config_prop)
+
+# Dolby Vision
+hal_client_domain(platform_app, hal_dvs)

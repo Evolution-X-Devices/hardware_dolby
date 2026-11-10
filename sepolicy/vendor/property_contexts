@@ -1,1 +1,5 @@
 ro.vendor.dolby. u:object_r:vendor_dolby_prop:s0
+
+# Dolby Vision
+persist.vendor.dolbyv.                          u:object_r:vendor_dolbyv_prop:s0
+vendor.dolbyv.                                  u:object_r:vendor_dolbyv_prop:s0
