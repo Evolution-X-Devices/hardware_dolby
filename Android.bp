@@ -1303,3 +1303,12 @@ cc_prebuilt_binary {
     relative_install_path: "hw",
     soc_specific: true,
 }
+
+prebuilt_etc_xml {
+    name: "vendor.dolby.media.c2.xml",
+    owner: "motorola",
+    src: "proprietary/vendor/etc/vintf/manifest/vendor.dolby.media.c2.xml",
+    filename_from_src: true,
+    sub_dir: "vintf/manifest",
+    soc_specific: true,
+}

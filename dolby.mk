@@ -17,6 +17,14 @@
 # Dolby path
 DOLBY_PATH := hardware/dolby
 
+# Dolby Vision (HIDL codec2 + DVS HAL), set to false to leave it out
+TARGET_INCLUDES_DOLBY_VISION ?= true
+
+DOLBY_MEDIA_CODECS := media_codecs_dolby_audio.xml
+ifeq ($(TARGET_INCLUDES_DOLBY_VISION),true)
+DOLBY_MEDIA_CODECS := media_codecs_dolby_vision.xml
+endif
+
 # Soong Namespace
 PRODUCT_SOONG_NAMESPACES += \
    $(DOLBY_PATH)
@@ -33,7 +41,7 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
 
 # Configs
 PRODUCT_COPY_FILES += \
-    $(DOLBY_PATH)/configs/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml \
+    $(DOLBY_PATH)/configs/$(DOLBY_MEDIA_CODECS):$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml \
     $(DOLBY_PATH)/proprietary/vendor/etc/dolby/dax-default-spatializer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default-spatializer.xml \
     $(DOLBY_PATH)/proprietary/vendor/etc/dolby/dax-default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default.xml \
     $(DOLBY_PATH)/proprietary/vendor/etc/dolby/dax-default_retin.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default_retin.xml
@@ -141,3 +149,38 @@ PRODUCT_PACKAGES += \
     libdlbvolaidl \
     libswdapaidl \
     libswgamedapaidl
+
+ifeq ($(TARGET_INCLUDES_DOLBY_VISION),true)
+# Dolby Vision: HIDL codec2 service, AIDL codec2 copies it links against
+PRODUCT_COPY_FILES += \
+    $(DOLBY_PATH)/proprietary/vendor/etc/dolby_vision.cfg:$(TARGET_COPY_OUT_VENDOR)/etc/dolby_vision.cfg \
+    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolbyvision.media.c2@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolbyvision.media.c2@1.0-service.rc \
+    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.media.dvs-service-vision.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.media.dvs-service-vision.rc
+
+PRODUCT_PACKAGES += \
+    c2.dolby.avc.dec \
+    c2.dolby.avc.sec.dec \
+    c2.dolby.client \
+    c2.dolby.egl \
+    c2.dolby.hevc.dec \
+    c2.dolby.hevc.enc \
+    c2.dolby.hevc.sec.dec \
+    c2.dolby.store \
+    dolbycodec2 \
+    libcodec2_aidl-dolby \
+    libcodec2_hal_common-aidl \
+    libcodec2_hidl_plugin-dolby \
+    libcodec2_hidl_shim.vendor \
+    libcodec2_vndk-aidl \
+    libdolbyottcameracontrol \
+    libdolbyvision \
+    libstagefright_foundation-atmos \
+    libstagefright_foundation-swiitchoff
+
+# Dolby Vision Service (HIDL) and the HIDL c2 instance it serves
+PRODUCT_PACKAGES += \
+    dvs-hal-service \
+    vendor.dolby.dvs@1.0 \
+    vendor.dolby.media.c2.xml \
+    vendor.dolby.media.dvs-service.xml
+endif
