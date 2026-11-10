@@ -15,6 +15,11 @@
 # game DAP (without it the app fails with error -3), and the spatializer
 # type for the spatializer, whose type and UUID are the same. Only the DAP
 # type is confirmed on a device; the others are not verified.
+#
+# The volume listener is also applied to the music stream after the
+# existing music effects, as the old HIDL config did. The file must
+# already have a <stream type="music"> in its <postprocess>: a second
+# one would be rejected as a duplicate stream type.
 set -e
 
 IN="$1"
@@ -56,6 +61,18 @@ add_effect dolby_dap          libswdapaidl.so          dap          9d4921da-822
 add_effect dolby_vol          libdlbvolaidl.so         dlb_music_listener 40f66c8b-5aa5-4345-8919-53ec431aaa98 "$EXT_TYPE"
 add_effect dolby_gamedap      libswgamedapaidl.so      gamedap      3783c334-d3a0-4d13-874f-0032e5fb80e2 "$EXT_TYPE"
 add_effect dolby_spatializer  libswspatializeraidl.so  spatializer  ccd4cf09-a79d-46c2-9aae-06a1698d6c8f ccd4cf09-a79d-46c2-9aae-06a1698d6c8f
+
+# Apply the volume listener on the music stream
+if grep -q 'apply effect="dlb_music_listener"' "$TMP"; then
+    echo "skip dlb_music_listener on music (already applied)"
+else
+    grep -q '<stream type="music">' "$TMP" || {
+        echo "unexpected format: no music stream in $IN" >&2
+        exit 1
+    }
+    sed -i '/<stream type="music">/,/<\/stream>/ s#^\( *\)</stream>#\1    <apply effect="dlb_music_listener"/>\n\1</stream>#' "$TMP"
+    echo "applied dlb_music_listener on music"
+fi
 
 cp "$TMP" "$OUT"
 echo "wrote $OUT"
