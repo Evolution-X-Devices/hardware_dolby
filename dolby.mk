@@ -26,6 +26,10 @@ AUDIO_FEATURE_ENABLED_DS2_DOLBY_DAP := true
 
 # SEPolicy
 BOARD_VENDOR_SEPOLICY_DIRS += $(DOLBY_PATH)/sepolicy/vendor
+
+# Framework compatibility matrix for the AIDL DMS HAL
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
+    $(DOLBY_PATH)/configs/compatibility_matrix_dolby.xml
     
 # Configs
 PRODUCT_COPY_FILES += \

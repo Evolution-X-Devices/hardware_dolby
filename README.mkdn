@@ -37,9 +37,9 @@ audio_effects_config.xml (v2.0) add:
 
 and apply dlb_music_listener on the music postprocess stream. The libraries
 need the audio effect HAL V2 and libaudio_aidl_conversion_common_ndk_prebuilt,
-which this module ships. Also append
+which this module ships. dolby.mk also appends
 configs/compatibility_matrix_dolby.xml to
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE in your BoardConfig.
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE, so keep it a += in your BoardConfig.
 
 Now, moving hidl definitions in manifest to device trees is completely absurd so stop overriding manifest in your device trees an example for such would be :-
 
