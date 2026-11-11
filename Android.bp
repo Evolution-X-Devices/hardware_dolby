@@ -109,7 +109,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/libcodec2_soft_ac4dec.so"],
-			shared_libs: ["libhidlbase", "vendor.dolby.hardware.dms@2.0", "libdeccfg", "libbase", "libcodec2", "libcodec2_vndk", "libutils", "libcodec2_soft_common", "libcutils", "liblog", "libsfplugin_ccodec_utils", "libstagefright_foundation-v33", "libcodec2_store_dolby", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["libdeccfg", "libstagefright_foundation", "libcutils", "libdmshal", "server_configurable_flags", "libaconfig_storage_read_api_cc", "libbase", "liblog", "libcodec2", "libcodec2_hal_common", "libcodec2_vndk", "libutils", "libcodec2_soft_common", "libcodec2_store_dolby", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -126,7 +126,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/libcodec2_soft_ddpdec.so"],
-			shared_libs: ["libhidlbase", "vendor.dolby.hardware.dms@2.0", "libdeccfg", "libbase", "libcodec2", "libcodec2_vndk", "libutils", "libcodec2_soft_common", "libcutils", "liblog", "libsfplugin_ccodec_utils", "libstagefright_foundation-v33", "libcodec2_store_dolby", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["libdeccfg", "libstagefright_foundation", "libcutils", "libdmshal", "server_configurable_flags", "libaconfig_storage_read_api_cc", "libbase", "liblog", "libcodec2", "libcodec2_hal_common", "libcodec2_vndk", "libutils", "libcodec2_soft_common", "libcodec2_store_dolby", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -143,7 +143,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/libcodec2_store_dolby.so"],
-			shared_libs: ["libdmabufheap", "libbase", "liblog", "libcodec2", "libcodec2_vndk", "libutils", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["libdmabufheap", "server_configurable_flags", "libaconfig_storage_read_api_cc", "libbase", "liblog", "libcodec2", "libcodec2_hal_common", "libcodec2_vndk", "libutils", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -160,7 +160,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/libdeccfg.so"],
-			shared_libs: ["libhidlbase", "vendor.dolby.hardware.dms@2.0", "libdapparamstorage", "libcutils", "libutils", "liblog", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["libdapparamstorage", "libcutils", "libutils", "liblog", "libdmshal", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
