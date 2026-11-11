@@ -10,6 +10,7 @@ import android.content.SharedPreferences
 import android.media.AudioAttributes
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
+import android.util.Log
 import org.lunaris.dolby.DolbyConstants
 import org.lunaris.dolby.DolbyConstants.DsParam
 import org.lunaris.dolby.R
@@ -154,11 +155,20 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
     }
 
     fun applySavedState() {
-    checkEffect()
-        val enabled = defaultPrefs.getBoolean(DolbyConstants.PREF_ENABLE, false)
-        dolbyEffect.dsOn = enabled
-        if (enabled) {
-            restoreSavedProfileIfNeeded()
+        if (isReleased) return
+
+        // Right after boot the DAP effect can reject parameters (INVALID_OPERATION) before the
+        // audio HAL has set it up. The service calls this again on every playback start and
+        // output device change, so a failed attempt is only logged.
+        try {
+            checkEffect()
+            val enabled = defaultPrefs.getBoolean(DolbyConstants.PREF_ENABLE, false)
+            dolbyEffect.dsOn = enabled
+            if (enabled) {
+                restoreSavedProfileIfNeeded()
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Error applying saved state: ${e.message}")
         }
     }
 
@@ -540,14 +550,11 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
         }
     }
 
+    // Read from prefs like the bass level. Reading it back from the DAP kept the surround strength
+    // slider at its old value, so it could not be dragged.
     fun getStereoWideningAmount(profile: Int): Int {
         if (!stereoWideningSupported) return 0
-        return try {
-            dolbyEffect.getDapParameterInt(DsParam.STEREO_WIDENING_AMOUNT, profile)
-        } catch (e: Exception) {
-            DolbyConstants.dlog(TAG, "Error getting stereo widening: ${e.message}")
-            32
-        }
+        return getProfilePrefs(profile).getInt(DolbyConstants.PREF_STEREO_WIDENING, 32)
     }
 
     fun setStereoWideningAmount(profile: Int, amount: Int) {
