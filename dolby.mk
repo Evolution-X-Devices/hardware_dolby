@@ -29,7 +29,8 @@ BOARD_VENDOR_SEPOLICY_DIRS += $(DOLBY_PATH)/sepolicy/vendor
 
 # Framework compatibility matrix for the AIDL DMS HAL
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
-    $(DOLBY_PATH)/configs/compatibility_matrix_dolby.xml
+    $(DOLBY_PATH)/configs/compatibility_matrix_dolby.xml \
+    $(DOLBY_PATH)/configs/compatibility_matrix_dolby_c2.xml
     
 # Configs
 PRODUCT_COPY_FILES += \
@@ -134,6 +135,7 @@ PRODUCT_PACKAGES += \
 
 # Codec2 (Dolby)
 PRODUCT_COPY_FILES += \
+    $(DOLBY_PATH)/proprietary/vendor/etc/vintf/manifest/vendor.dolby.media.c2.xml:$(TARGET_COPY_OUT_VENDOR)/etc/vintf/manifest/vendor.dolby.media.c2.xml \
     $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.media.c2@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.media.c2@1.0-service.rc
 
 PRODUCT_PACKAGES += \
