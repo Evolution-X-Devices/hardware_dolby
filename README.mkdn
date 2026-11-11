@@ -36,9 +36,8 @@ audio_effects_config.xml (v2.0) add:
 ```
 
 and apply dlb_music_listener on the music postprocess stream. The libraries
-need the audio effect HAL V2 and a prebuilt libaudio_aidl_conversion_common_ndk
-named libaudio_aidl_conversion_common_ndk_prebuilt, which the device tree has
-to provide (onyx pulls it from the stock vendor image). Also append
+need the audio effect HAL V2 and libaudio_aidl_conversion_common_ndk_prebuilt,
+which this module ships. Also append
 configs/compatibility_matrix_dolby.xml to
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE in your BoardConfig.
 

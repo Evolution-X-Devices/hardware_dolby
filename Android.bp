@@ -612,7 +612,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/soundfx/libdlbvolaidl.so"],
-			shared_libs: ["libaudioutils", "libstagefright_foundation-v33", "libdlbpreg", "liblog", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libdapparamstorage", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["libaudioutils", "libstagefright_foundation-v33", "libdlbpreg", "liblog", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libdapparamstorage", "libaudio_aidl_conversion_common_ndk_prebuilt", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -630,7 +630,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/soundfx/libhwdapaidl.so"],
-			shared_libs: ["libaudioutils", "libdapparamstorage", "libdlbpreg", "libdmshal", "libspatializerparamstorage", "android.media.audio.common.types-V3-ndk", "liblog", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libstagefright_foundation-v33", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["libaudioutils", "libdapparamstorage", "libdlbpreg", "libdmshal", "libspatializerparamstorage", "android.media.audio.common.types-V3-ndk", "liblog", "libaudio_aidl_conversion_common_ndk_prebuilt", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libstagefright_foundation-v33", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -648,7 +648,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/soundfx/libswgamedapaidl.so"],
-			shared_libs: ["libaudioutils", "libdapparamstorage", "libstagefright_foundation-v33", "libdlbpreg", "libdmshal", "liblog", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["libaudioutils", "libdapparamstorage", "libstagefright_foundation-v33", "libdlbpreg", "libdmshal", "liblog", "libaudio_aidl_conversion_common_ndk_prebuilt", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -666,7 +666,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/soundfx/libswspatializeraidl.so"],
-			shared_libs: ["liblog", "libdapparamstorage", "libspatializerparamstorage", "libstagefright_foundation-v33", "libdlbpreg", "libdmshal", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libaudioutils", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["liblog", "libaudio_aidl_conversion_common_ndk_prebuilt", "libdapparamstorage", "libspatializerparamstorage", "libstagefright_foundation-v33", "libdlbpreg", "libdmshal", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libaudioutils", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -684,7 +684,24 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/libswspatializeraidl_ext.so"],
-			shared_libs: ["liblog", "libdapparamstorage", "libspatializerparamstorage", "libstagefright_foundation-v33", "libdlbpreg", "libdmshal", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libaudioutils", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["liblog", "libaudio_aidl_conversion_common_ndk_prebuilt", "libdapparamstorage", "libspatializerparamstorage", "libstagefright_foundation-v33", "libdlbpreg", "libdmshal", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libaudioutils", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libaudio_aidl_conversion_common_ndk_prebuilt",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/libaudio_aidl_conversion_common_ndk_prebuilt.so"],
+			shared_libs: ["android.media.audio.common.types-V3-ndk", "android.hardware.audio.common-V3-ndk", "liblog", "libstagefright_foundation-v33", "libutils", "libbase", "libbinder_ndk", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",

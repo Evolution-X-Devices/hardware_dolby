@@ -128,6 +128,7 @@ PRODUCT_PACKAGES += \
 
 # Dolby SoundFX Blobs
 PRODUCT_PACKAGES += \
+    libaudio_aidl_conversion_common_ndk_prebuilt \
     libdlbvolaidl \
     libhwdapaidl \
     libswgamedapaidl
