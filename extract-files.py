@@ -18,6 +18,10 @@ blob_fixups: blob_fixups_user_type = {
     # Only default9 is ours, default comes from the common vendor manifest
     'vendor/etc/vintf/manifest/vendor.dolby.media.c2-default-service-dax.xml': blob_fixup()
         .regex_replace(r'[ \t]*<fqname>IComponentStore/default</fqname>\n', ''),
+    # The ComponentStore is allocated 0x108 bytes, but the newer HIDL
+    # libraries need 0x140, which corrupts the heap and crashes the service
+    'vendor/bin/hw/dolbycodec2': blob_fixup()
+        .sig_replace('00 21 80 52', '00 28 80 52'),
     'vendor/lib64/soundfx/libdlbvolaidl.so': blob_fixup()
         .replace_needed(
             'android.media.audio.common.types-V4-ndk.so',
