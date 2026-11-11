@@ -96,6 +96,17 @@ PRODUCT_VENDOR_PROPERTIES += \
     vendor.audio.dolby.ds2.hardbypass=false \
     vendor.audio.dolby.ds2.enabled=false
 
+# Dolby audio props (from onyx odm.prop)
+PRODUCT_ODM_PROPERTIES += \
+    persist.vendor.audio.effectimplenter=dolby \
+    audio.spatializer.pose_predictor_type=2 \
+    audio.spatializer.prediction_duration_ms=50 \
+    persist.vendor.audio.spatializer.enable=false \
+    persist.vendor.audio.fpsop.game.effect=true \
+    persist.vendor.audio.fpsop.game.effect.switch=true \
+    persist.vendor.audio.fpsop.game.effect.speaker=false \
+    persist.vendor.audio.game.effect.version=2
+
 # Remove Packages for Dolby Support
 PRODUCT_PACKAGES += \
     RemovePackagesDolby
