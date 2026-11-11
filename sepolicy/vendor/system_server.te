@@ -1,1 +1,1 @@
-hal_client_domain(system_server, hal_dms)
+hal_client_domain(system_server, hal_aidl_dms)

@@ -101,15 +101,17 @@ PRODUCT_PACKAGES += \
 
 # Dolby Proprietary blobs
 PRODUCT_COPY_FILES += \
-    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.hardware.dms@2.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.hardware.dms@2.0-service.rc
+    $(DOLBY_PATH)/proprietary/vendor/etc/init/dms-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/dms-service.rc \
+    $(DOLBY_PATH)/proprietary/vendor/etc/vintf/manifest/dms-service.xml:$(TARGET_COPY_OUT_VENDOR)/etc/vintf/manifest/dms-service.xml
 
 PRODUCT_PACKAGES += \
     libdapparamstorage \
     libdlbdsservice \
     libdlbpreg \
-    vendor.dolby.hardware.dms@2.0-impl \
+    libdmshal \
+    vendor.dolby.dms-V1-ndk \
     vendor.dolby.hardware.dms@2.0 \
-    vendor.dolby.hardware.dms@2.0-service
+    vendor.dolby.dms.service
 
 # Codec2 (Dolby)
 PRODUCT_COPY_FILES += \
