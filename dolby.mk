@@ -30,6 +30,7 @@ BOARD_VENDOR_SEPOLICY_DIRS += $(DOLBY_PATH)/sepolicy/vendor
 # Configs
 PRODUCT_COPY_FILES += \
     $(DOLBY_PATH)/configs/dax-default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default.xml \
+    $(DOLBY_PATH)/configs/dax-default-spatializer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default-spatializer.xml \
     $(DOLBY_PATH)/configs/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml
 
 # Dolby VNDK libs
@@ -65,7 +66,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Dolby Spatial Audio Proprietary blobs
 PRODUCT_PACKAGES += \
     libspatializerparamstorage \
-    libswspatializer
+    libswspatializeraidl \
+    libswspatializeraidl_ext
     
 
 # Media (C2)
@@ -126,11 +128,9 @@ PRODUCT_PACKAGES += \
 
 # Dolby SoundFX Blobs
 PRODUCT_PACKAGES += \
-    libdlbvol \
-    libhwdap \
-    libswgamedap \
-    libswvqe \
-    libswdap
+    libdlbvolaidl \
+    libhwdapaidl \
+    libswgamedapaidl
 
 # Dolby vision Proprietary blobs
 PRODUCT_COPY_FILES += \

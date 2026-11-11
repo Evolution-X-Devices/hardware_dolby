@@ -187,114 +187,6 @@ cc_prebuilt_binary {
 }
 
 cc_prebuilt_library_shared {
-	name: "libdlbvol",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/soundfx/libdlbvol.so"],
-			shared_libs: ["liblog", "libutils", "libcutils", "libaudioutils", "libstagefright_foundation-v33", "libdlbpreg", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	relative_install_path: "soundfx",
-	prefer: true,
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-	name: "libswdap",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/soundfx/libswdap.so"],
-			shared_libs: ["liblog", "libutils", "libcutils", "libaudioutils", "libdapparamstorage", "libspatializerparamstorage", "libhidlbase", "libstagefright_foundation", "libdlbpreg", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	relative_install_path: "soundfx",
-	prefer: true,
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-	name: "libhwdap",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/soundfx/libhwdap.so"],
-			shared_libs: ["libspatializerparamstorage", "liblog", "libutils", "libcutils", "libaudioutils", "libdapparamstorage", "libhidlbase", "libdlbpreg", "vendor.dolby.hardware.dms@2.0", "libstagefright_foundation-v33", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	relative_install_path: "soundfx",
-	prefer: true,
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-	name: "libswgamedap",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/soundfx/libswgamedap.so"],
-			shared_libs: ["libspatializerparamstorage", "liblog", "libutils", "libcutils", "libaudioutils", "libdapparamstorage", "libhidlbase", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	relative_install_path: "soundfx",
-	prefer: true,
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-	name: "libswspatializer",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/soundfx/libswspatializer.so"],
-			shared_libs: ["liblog", "libutils", "libcutils", "libaudioutils", "libdapparamstorage", "libspatializerparamstorage", "libhidlbase", "libstagefright_foundation-v33", "libdlbpreg", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	relative_install_path: "soundfx",
-	prefer: true,
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-	name: "libswvqe",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/soundfx/libswvqe.so"],
-			shared_libs: ["libspatializerparamstorage", "liblog", "libutils", "libcutils", "libaudioutils", "libdapparamstorage", "libhidlbase", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	relative_install_path: "soundfx",
-	prefer: true,
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
     name: "c2.dolby.avc.dec",
     owner: "xiaomi",
     strip: {
@@ -707,6 +599,95 @@ cc_prebuilt_binary {
 	},
 	compile_multilib: "64",
 	relative_install_path: "hw",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libdlbvolaidl",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/soundfx/libdlbvolaidl.so"],
+			shared_libs: ["libaudioutils", "libstagefright_foundation-v33", "libdlbpreg", "liblog", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libdapparamstorage", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	relative_install_path: "soundfx",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libhwdapaidl",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/soundfx/libhwdapaidl.so"],
+			shared_libs: ["libaudioutils", "libdapparamstorage", "libdlbpreg", "libdmshal", "libspatializerparamstorage", "android.media.audio.common.types-V3-ndk", "liblog", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libstagefright_foundation-v33", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	relative_install_path: "soundfx",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libswgamedapaidl",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/soundfx/libswgamedapaidl.so"],
+			shared_libs: ["libaudioutils", "libdapparamstorage", "libstagefright_foundation-v33", "libdlbpreg", "libdmshal", "liblog", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	relative_install_path: "soundfx",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libswspatializeraidl",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/soundfx/libswspatializeraidl.so"],
+			shared_libs: ["liblog", "libdapparamstorage", "libspatializerparamstorage", "libstagefright_foundation-v33", "libdlbpreg", "libdmshal", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libaudioutils", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	relative_install_path: "soundfx",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libswspatializeraidl_ext",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/libswspatializeraidl_ext.so"],
+			shared_libs: ["liblog", "libdapparamstorage", "libspatializerparamstorage", "libstagefright_foundation-v33", "libdlbpreg", "libdmshal", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libaudioutils", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
 	prefer: true,
 	soc_specific: true,
 }
