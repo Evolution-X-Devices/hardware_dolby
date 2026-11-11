@@ -97,6 +97,11 @@ class DolbyEffectService : Service() {
             }
         }
 
+        if (!isSameRoute(oldDevice, newDevice)) {
+            Log.d(TAG, "Media route changed, recreating the Dolby effect")
+            repository.recreateEffect()
+        }
+
         if (newDevice != null) {
             val newKey = deviceStateManager.deviceKey(newDevice)
             if (isDeviceStateMemoryEnabled) {
@@ -117,6 +122,9 @@ class DolbyEffectService : Service() {
             previousActiveDevice = null
         }
     }
+
+    private fun isSameRoute(a: AudioDeviceInfo?, b: AudioDeviceInfo?): Boolean =
+        a?.type == b?.type && a?.address == b?.address
 
     private fun getCurrentOutputDevice(): AudioDeviceInfo? {
         val routedDevice = try {

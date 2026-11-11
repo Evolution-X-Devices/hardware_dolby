@@ -22,7 +22,19 @@ import kotlinx.coroutines.flow.asStateFlow
 class DolbyRepository(private val context: Context) : AutoCloseable {
 
     private val audioManager = context.getSystemService(AudioManager::class.java)
-    private var dolbyEffect = createDolbyEffect()
+    private val dolbyEffect: DolbyAudioEffect
+        get() = synchronized(effectLock) {
+            sharedEffect ?: createDolbyEffect().also { sharedEffect = it }
+        }
+
+    init {
+        synchronized(effectLock) {
+            effectRefs++
+            if (sharedEffect == null) {
+                sharedEffect = createDolbyEffect()
+            }
+        }
+    }
     
     private val defaultPrefs = context.getSharedPreferences("dolby_prefs", Context.MODE_PRIVATE)
     private val presetsPrefs = context.getSharedPreferences(DolbyConstants.PREF_FILE_PRESETS, Context.MODE_PRIVATE)
@@ -50,6 +62,25 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
         }
     }
 
+    fun recreateEffect() {
+        if (isReleased) return
+
+        synchronized(effectLock) {
+            try {
+                sharedEffect?.release()
+            } catch (e: Exception) {
+                DolbyConstants.dlog(TAG, "Error releasing effect: ${e.message}")
+            }
+            sharedEffect = null
+
+            try {
+                sharedEffect = createDolbyEffect()
+            } catch (e: Exception) {
+                DolbyConstants.dlog(TAG, "Failed to recreate effect: ${e.message}")
+            }
+        }
+    }
+
     private fun checkEffect() {
         if (isReleased) {
             DolbyConstants.dlog(TAG, "Repository released, skipping effect check")
@@ -57,11 +88,13 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
         }
         
         try {
-            if (!dolbyEffect.hasControl()) {
-                DolbyConstants.dlog(TAG, "Lost audio effect control, recreating")
-                dolbyEffect.release()
-                dolbyEffect = createDolbyEffect()
-                restoreSavedProfileIfNeeded()
+            synchronized(effectLock) {
+                if (!dolbyEffect.hasControl()) {
+                    DolbyConstants.dlog(TAG, "Lost audio effect control, recreating")
+                    sharedEffect?.release()
+                    sharedEffect = createDolbyEffect()
+                    restoreSavedProfileIfNeeded()
+                }
             }
         } catch (e: Exception) {
             DolbyConstants.dlog(TAG, "Error checking effect: ${e.message}")
@@ -897,10 +930,17 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
         if (!isReleased) {
             DolbyConstants.dlog(TAG, "Releasing repository resources")
             isReleased = true
-            try {
-                dolbyEffect.release()
-            } catch (e: Exception) {
-                DolbyConstants.dlog(TAG, "Error releasing effect: ${e.message}")
+            synchronized(effectLock) {
+                effectRefs--
+                if (effectRefs <= 0) {
+                    effectRefs = 0
+                    try {
+                        sharedEffect?.release()
+                    } catch (e: Exception) {
+                        DolbyConstants.dlog(TAG, "Error releasing effect: ${e.message}")
+                    }
+                    sharedEffect = null
+                }
             }
         }
     }
@@ -912,6 +952,13 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
     companion object {
         private const val TAG = "DolbyRepository"
         private const val EFFECT_PRIORITY = 100
+
+        // All repositories in the app share one handle on the session 0 DAP
+        // effect. Handles of equal priority never take control from each
+        // other, so a second handle could not change any parameter.
+        private val effectLock = Any()
+        private var sharedEffect: DolbyAudioEffect? = null
+        private var effectRefs = 0
         
         private const val BASS_GAIN_MULTIPLIER = 1.4f
         private const val MID_GAIN_MULTIPLIER = 1.3f
