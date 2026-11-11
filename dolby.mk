@@ -82,6 +82,8 @@ PRODUCT_PACKAGES += \
     android.hardware.media.c2@1.0.vendor \
     android.hardware.media.c2@1.1.vendor \
     android.hardware.media.c2@1.2.vendor \
+    libcodec2_hidl@1.0.vendor \
+    libcodec2_hidl@1.1.vendor \
     libcodec2_hidl@1.2.vendor \
     libsfplugin_ccodec_utils.vendor \
     libcodec2_soft_common.vendor
@@ -134,14 +136,14 @@ PRODUCT_PACKAGES += \
 
 # Codec2 (Dolby)
 PRODUCT_COPY_FILES += \
-    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.media.c2@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.media.c2@1.0-service.rc
+    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.media.c2-default-service-dax.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.media.c2-default-service-dax.rc
 
 PRODUCT_PACKAGES += \
     libcodec2_soft_ac4dec \
     libcodec2_soft_ddpdec \
     libcodec2_store_dolby \
     libdeccfg \
-    vendor.dolby.media.c2@1.0-service
+    vendor.dolby.media.c2-default-service-dax
 
 # Dolby SoundFX Blobs
 PRODUCT_PACKAGES += \
