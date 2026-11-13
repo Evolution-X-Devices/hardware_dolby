@@ -41,7 +41,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/libdlbdsservice.so"],
-			shared_libs: ["libutils", "libcutils", "libstagefright_foundation-v33", "liblog", "libxml2", "libcrypto", "libdapparamstorage", "libsqlite", "libhidlbase", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["libutils", "libcutils", "libstagefright_foundation", "liblog", "libxml2", "libcrypto", "libdapparamstorage", "libsqlite", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -58,41 +58,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/libdlbpreg.so"],
-			shared_libs: ["liblog", "libutils", "libcutils", "libaudioutils", "libstagefright_foundation-v33", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	prefer: true,
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-	name: "libspatializerparamstorage",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/libspatializerparamstorage.so"],
-			shared_libs: ["libcutils", "libutils", "liblog", "libxml2", "libdapparamstorage", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	prefer: true,
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-	name: "vendor.dolby.hardware.dms@2.0-impl",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/vendor.dolby.hardware.dms@2.0-impl.so"],
-			shared_libs: ["libhidlbase", "libutils", "liblog", "libdapparamstorage", "libdlbdsservice", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["liblog", "libutils", "libcutils", "libaudioutils", "libstagefright_foundation", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -117,24 +83,6 @@ cc_prebuilt_library_shared {
 	soc_specific: true,
 }
 
-cc_prebuilt_binary {
-	name: "vendor.dolby.hardware.dms@2.0-service",
-	owner: "xiaomi",
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service"],
-			shared_libs: ["liblog", "libutils", "libhidlbase", "libdapparamstorage", "libdlbdsservice", "vendor.dolby.hardware.dms@2.0", "vendor.dolby.hardware.dms@2.0-impl", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	strip: {
-		none: true,
-	},
-	prefer: true,
-	relative_install_path: "hw",
-	soc_specific: true,
-}
-
 cc_prebuilt_library_shared {
 	name: "libcodec2_soft_ac4dec",
 	owner: "xiaomi",
@@ -144,7 +92,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/libcodec2_soft_ac4dec.so"],
-			shared_libs: ["libhidlbase", "vendor.dolby.hardware.dms@2.0", "libdeccfg", "libbase", "libcodec2", "libcodec2_vndk", "libutils", "libcodec2_soft_common", "libcutils", "liblog", "libsfplugin_ccodec_utils", "libstagefright_foundation-v33", "libcodec2_store_dolby", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["libdeccfg", "libstagefright_foundation", "libcutils", "libdmshal", "server_configurable_flags", "libaconfig_storage_read_api_cc", "libbase", "liblog", "libcodec2", "libcodec2_hal_common", "libcodec2_vndk", "libutils", "libcodec2_soft_common", "libcodec2_store_dolby", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -161,7 +109,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/libcodec2_soft_ddpdec.so"],
-			shared_libs: ["libhidlbase", "vendor.dolby.hardware.dms@2.0", "libdeccfg", "libbase", "libcodec2", "libcodec2_vndk", "libutils", "libcodec2_soft_common", "libcutils", "liblog", "libsfplugin_ccodec_utils", "libstagefright_foundation-v33", "libcodec2_store_dolby", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["libdeccfg", "libstagefright_foundation", "libcutils", "libdmshal", "server_configurable_flags", "libaconfig_storage_read_api_cc", "libbase", "liblog", "libcodec2", "libcodec2_hal_common", "libcodec2_vndk", "libutils", "libcodec2_soft_common", "libcodec2_store_dolby", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -178,7 +126,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/libcodec2_store_dolby.so"],
-			shared_libs: ["libdmabufheap", "libbase", "liblog", "libcodec2", "libcodec2_vndk", "libutils", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["libdmabufheap", "server_configurable_flags", "libaconfig_storage_read_api_cc", "libbase", "liblog", "libcodec2", "libcodec2_hal_common", "libcodec2_vndk", "libutils", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -195,7 +143,7 @@ cc_prebuilt_library_shared {
 	target: {
 		android_arm64: {
 			srcs: ["proprietary/vendor/lib64/libdeccfg.so"],
-			shared_libs: ["libhidlbase", "vendor.dolby.hardware.dms@2.0", "libdapparamstorage", "libcutils", "libutils", "liblog", "libc++", "libc", "libm", "libdl", ],
+			shared_libs: ["libdapparamstorage", "libcutils", "libutils", "liblog", "libdmshal", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -204,12 +152,12 @@ cc_prebuilt_library_shared {
 }
 
 cc_prebuilt_binary {
-	name: "vendor.dolby.media.c2@1.0-service",
+	name: "vendor.dolby.media.c2-default-service-dax",
 	owner: "xiaomi",
 	target: {
 		android_arm64: {
-			srcs: ["proprietary/vendor/bin/hw/vendor.dolby.media.c2@1.0-service"],
-			shared_libs: ["libbase", "liblog", "libcodec2", "libutils", "android.hardware.media.c2@1.0", "android.hardware.media.c2@1.1", "android.hardware.media.c2@1.2", "libcodec2_hidl@1.0", "libcodec2_hidl@1.1", "libcodec2_hidl@1.2", "libcodec2_vndk", "libhidlbase", "libavservices_minijail", "libbinder", "libcodec2_store_dolby", "libc++", "libc", "libm", "libdl", ],
+			srcs: ["proprietary/vendor/bin/hw/vendor.dolby.media.c2-default-service-dax"],
+			shared_libs: ["android.hardware.media.c2-V1-ndk", "libbinder_ndk", "libcodec2_aidl", "server_configurable_flags", "libaconfig_storage_read_api_cc", "libbase", "liblog", "libcodec2", "libcodec2_hal_common", "libutils", "android.hardware.media.c2@1.0", "android.hardware.media.c2@1.1", "android.hardware.media.c2@1.2", "libcodec2_hidl@1.0", "libcodec2_hidl@1.1", "libcodec2_hidl@1.2", "libcodec2_vndk", "libhidlbase", "libavservices_minijail", "libbinder", "libcodec2_store_dolby", "libc++", "libc", "libm", "libdl", ],
 		},
 	},
 	compile_multilib: "64",
@@ -218,115 +166,6 @@ cc_prebuilt_binary {
 	},
 	prefer: true,
 	relative_install_path: "hw",
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-	name: "libdlbvol",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/soundfx/libdlbvol.so"],
-			shared_libs: ["liblog", "libutils", "libcutils", "libaudioutils", "libstagefright_foundation-v33", "libdlbpreg", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	relative_install_path: "soundfx",
-	prefer: true,
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-	name: "libswdap",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/soundfx/libswdap.so"],
-			shared_libs: ["liblog", "libutils", "libcutils", "libaudioutils", "libdapparamstorage", "libspatializerparamstorage", "libhidlbase", "libstagefright_foundation", "libdlbpreg", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	relative_install_path: "soundfx",
-	prefer: true,
-	soc_specific: true,
-}
-
-
-cc_prebuilt_library_shared {
-	name: "libhwdap",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/soundfx/libhwdap.so"],
-			shared_libs: ["libspatializerparamstorage", "liblog", "libutils", "libcutils", "libaudioutils", "libdapparamstorage", "libhidlbase", "libdlbpreg", "vendor.dolby.hardware.dms@2.0", "libstagefright_foundation-v33", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	relative_install_path: "soundfx",
-	prefer: true,
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-	name: "libswgamedap",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/soundfx/libswgamedap.so"],
-			shared_libs: ["libspatializerparamstorage", "liblog", "libutils", "libcutils", "libaudioutils", "libdapparamstorage", "libhidlbase", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	relative_install_path: "soundfx",
-	prefer: true,
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-	name: "libswspatializer",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/soundfx/libswspatializer.so"],
-			shared_libs: ["liblog", "libutils", "libcutils", "libaudioutils", "libdapparamstorage", "libspatializerparamstorage", "libhidlbase", "libstagefright_foundation-v33", "libdlbpreg", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	relative_install_path: "soundfx",
-	prefer: true,
-	soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-	name: "libswvqe",
-	owner: "xiaomi",
-	strip: {
-		none: true,
-	},
-	target: {
-		android_arm64: {
-			srcs: ["proprietary/vendor/lib64/soundfx/libswvqe.so"],
-			shared_libs: ["libspatializerparamstorage", "liblog", "libutils", "libcutils", "libaudioutils", "libdapparamstorage", "libhidlbase", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
-		},
-	},
-	compile_multilib: "64",
-	relative_install_path: "soundfx",
-	prefer: true,
 	soc_specific: true,
 }
 
@@ -695,3 +534,125 @@ cc_prebuilt_binary {
     soc_specific: true,
 }
 
+cc_prebuilt_library_shared {
+	name: "vendor.dolby.dms-V1-ndk",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/vendor.dolby.dms-V1-ndk.so"],
+			shared_libs: ["libbinder_ndk", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libdmshal",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/libdmshal.so"],
+			shared_libs: ["libbinder", "libbinder_ndk", "libcutils", "libutils", "liblog", "libdapparamstorage", "vendor.dolby.dms-V1-ndk", "libhidlbase", "vendor.dolby.hardware.dms@2.0", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_binary {
+	name: "vendor.dolby.dms.service",
+	owner: "xiaomi",
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/bin/hw/vendor.dolby.dms.service"],
+			shared_libs: ["liblog", "libutils", "libbase", "libbinder", "libbinder_ndk", "vendor.dolby.dms-V1-ndk", "libdapparamstorage", "libdmshal", "libdlbdsservice", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	strip: {
+		none: true,
+	},
+	compile_multilib: "64",
+	relative_install_path: "hw",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libdlbvolaidl",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/soundfx/libdlbvolaidl.so"],
+			shared_libs: ["libaudioutils", "libstagefright_foundation", "libdlbpreg", "liblog", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libdapparamstorage", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	relative_install_path: "soundfx",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libhwdapaidl",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/soundfx/libhwdapaidl.so"],
+			shared_libs: ["libaudioutils", "libdapparamstorage", "libdlbpreg", "libdmshal", "liblog", "libaudio_aidl_conversion_common_ndk_prebuilt", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.media.audio.common.types-V3-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libstagefright_foundation", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	relative_install_path: "soundfx",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libswgamedapaidl",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/soundfx/libswgamedapaidl.so"],
+			shared_libs: ["libaudioutils", "libdapparamstorage", "libstagefright_foundation", "libdlbpreg", "libdmshal", "liblog", "libaudio_aidl_conversion_common_ndk_prebuilt", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	relative_install_path: "soundfx",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libaudio_aidl_conversion_common_ndk_prebuilt",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/libaudio_aidl_conversion_common_ndk_prebuilt.so"],
+			shared_libs: ["android.media.audio.common.types-V3-ndk", "android.hardware.audio.common-V3-ndk", "liblog", "libstagefright_foundation", "libutils", "libbase", "libbinder_ndk", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	prefer: true,
+	soc_specific: true,
+}

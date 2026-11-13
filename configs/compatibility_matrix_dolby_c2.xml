@@ -1,0 +1,10 @@
+<compatibility-matrix version="4.0" type="framework">
+    <hal format="aidl" optional="true">
+        <name>android.hardware.media.c2</name>
+        <version>1</version>
+        <interface>
+            <name>IComponentStore</name>
+            <instance>default9</instance>
+        </interface>
+    </hal>
+</compatibility-matrix>
