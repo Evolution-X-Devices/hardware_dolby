@@ -115,7 +115,10 @@ PRODUCT_PACKAGES += \
     libaudio_aidl_conversion_common_ndk_prebuilt \
     libdlbvolaidl \
     libhwdapaidl \
-    libswgamedapaidl
+    libspatializerparamstorage \
+    libswgamedapaidl \
+    libswspatializeraidl \
+    libswspatializeraidl_ext
 
 # Dolby vision Proprietary blobs
 PRODUCT_COPY_FILES += \

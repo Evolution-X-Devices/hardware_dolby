@@ -641,6 +641,58 @@ cc_prebuilt_library_shared {
 }
 
 cc_prebuilt_library_shared {
+	name: "libswspatializeraidl",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/soundfx/libswspatializeraidl.so"],
+			shared_libs: ["libaudioutils", "libdapparamstorage", "libspatializerparamstorage", "libstagefright_foundation", "libdlbpreg", "libdmshal", "liblog", "libaudio_aidl_conversion_common_ndk_prebuilt", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	relative_install_path: "soundfx",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libswspatializeraidl_ext",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/libswspatializeraidl_ext.so"],
+			shared_libs: ["libaudioutils", "libdapparamstorage", "libspatializerparamstorage", "libstagefright_foundation", "libdlbpreg", "libdmshal", "liblog", "libaudio_aidl_conversion_common_ndk_prebuilt", "android.hardware.audio.effect-V2-ndk", "android.hardware.common-V2-ndk", "android.hardware.common.fmq-V1-ndk", "libaudioaidlcommon", "libbase", "libbinder_ndk", "libcutils", "libfmq", "libutils", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+	name: "libspatializerparamstorage",
+	owner: "xiaomi",
+	strip: {
+		none: true,
+	},
+	target: {
+		android_arm64: {
+			srcs: ["proprietary/vendor/lib64/libspatializerparamstorage.so"],
+			shared_libs: ["libcutils", "libutils", "liblog", "libxml2", "libdapparamstorage", "libc++", "libc", "libm", "libdl", ],
+		},
+	},
+	compile_multilib: "64",
+	prefer: true,
+	soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
 	name: "libaudio_aidl_conversion_common_ndk_prebuilt",
 	owner: "xiaomi",
 	strip: {
