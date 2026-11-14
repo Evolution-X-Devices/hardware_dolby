@@ -149,6 +149,10 @@ PRODUCT_PACKAGES += \
     libstagefright_foundation-swiitchoff \
     vendor.dolby.dvs@1.0
 
+# Dolby Vision Codec2 store over AIDL (default2)
+PRODUCT_PACKAGES += \
+    android.hardware.media.c2-dolby-service
+
 # HIDL facade for the Qualcomm Codec2 store, for HIDL Dolby Vision decoders
 PRODUCT_PACKAGES += \
     android.hardware.media.c2-qc2hidl-service

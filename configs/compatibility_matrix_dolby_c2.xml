@@ -4,6 +4,7 @@
         <version>1</version>
         <interface>
             <name>IComponentStore</name>
+            <instance>default2</instance>
             <instance>default9</instance>
         </interface>
     </hal>

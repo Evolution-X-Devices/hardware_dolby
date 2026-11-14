@@ -1,0 +1,9 @@
+<manifest version="1.0" type="device">
+    <!-- default2: Dolby Vision. The instance name is labeled
+         hal_codec2_service in sepolicy/vendor/service_contexts. -->
+    <hal format="aidl">
+        <name>android.hardware.media.c2</name>
+        <version>1</version>
+        <fqname>IComponentStore/default2</fqname>
+    </hal>
+</manifest>

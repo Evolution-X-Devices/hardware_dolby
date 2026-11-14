@@ -1,0 +1,7 @@
+# Dolby Vision decoders over AIDL (same store as dolbycodec2).
+service vendor.media.c2-dolby-vision /vendor/bin/hw/android.hardware.media.c2-dolby-service /vendor/lib64/c2.dolby.store.so default2
+    class hal
+    user mediacodec
+    group camera mediadrm drmrpc
+    ioprio rt 4
+    task_profiles ProcessCapacityHigh HighPerformance

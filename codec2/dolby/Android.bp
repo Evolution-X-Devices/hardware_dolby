@@ -1,0 +1,30 @@
+//
+// SPDX-FileCopyrightText: 2026 The Evolution X Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+// Serves the Dolby Vision Codec2 store (c2.dolby.store) as AIDL
+// IComponentStore/default2. The stock dolbycodec2 registers it over HIDL,
+// which the framework does not list with media.c2.hal.selection=aidl.
+cc_binary {
+    name: "android.hardware.media.c2-dolby-service",
+    vendor: true,
+    relative_install_path: "hw",
+
+    init_rc: ["android.hardware.media.c2-dolby-service.rc"],
+    vintf_fragments: ["manifest_media_c2_dolby.xml"],
+
+    defaults: [
+        "libcodec2-hidl-defaults",
+        "libcodec2-aidl-defaults",
+    ],
+
+    srcs: ["service.cpp"],
+
+    shared_libs: [
+        "libbinder_ndk",
+    ],
+
+    // The store library (c2.dolby.store) and its decoders come from the
+    // prebuilts in this tree and are loaded with dlopen.
+}

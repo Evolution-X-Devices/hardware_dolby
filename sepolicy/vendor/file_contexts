@@ -8,3 +8,4 @@
 # Dolby Vision
 /vendor/bin/hw/dolbycodec2                                                u:object_r:mediacodec_exec:s0
 /(system/vendor|vendor)/bin/hw/android\.hardware\.media\.c2-qc2hidl-service    u:object_r:mediacodec_exec:s0
+/(system/vendor|vendor)/bin/hw/android\.hardware\.media\.c2-dolby-service    u:object_r:mediacodec_exec:s0
