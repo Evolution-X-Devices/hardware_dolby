@@ -139,6 +139,10 @@ PRODUCT_PACKAGES += \
     libdolbyvision \
     dolbycodec2
 
+# HIDL facade for the Qualcomm Codec2 store, for HIDL Dolby Vision decoders
+PRODUCT_PACKAGES += \
+    android.hardware.media.c2-qc2hidl-service
+
 # Shim
 PRODUCT_PACKAGES += \
     libcodec2_hidl_shim.vendor

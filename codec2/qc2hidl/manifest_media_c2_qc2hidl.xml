@@ -1,0 +1,14 @@
+<manifest version="1.0" type="device">
+    <!-- Qualcomm Codec2 store over HIDL, only for the Dolby Vision decoders.
+         The framework keeps using the AIDL IComponentStore/default that
+         vendor.qti.media.c2@1.0-service declares. -->
+    <hal format="hidl">
+        <name>android.hardware.media.c2</name>
+        <transport>hwbinder</transport>
+        <version>1.2</version>
+        <interface>
+            <name>IComponentStore</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+</manifest>

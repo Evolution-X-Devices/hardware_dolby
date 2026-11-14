@@ -1,0 +1,8 @@
+# HIDL entry point to the Qualcomm Codec2 store for the Dolby Vision decoders.
+# Same user, groups and scheduling as vendor.qti.media.c2@1.0-service.
+service vendor.media.c2-qc2hidl /vendor/bin/hw/android.hardware.media.c2-qc2hidl-service
+    class hal
+    user mediacodec
+    group mediadrm camera drmrpc system
+    ioprio rt 4
+    task_profiles ProcessCapacityHigh
