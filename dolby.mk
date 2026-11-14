@@ -25,13 +25,15 @@ PRODUCT_SOONG_NAMESPACES += \
 AUDIO_FEATURE_ENABLED_DS2_DOLBY_DAP := true
 
 # SEPolicy
-BOARD_VENDOR_SEPOLICY_DIRS += $(DOLBY_PATH)/sepolicy/vendor
+BOARD_VENDOR_SEPOLICY_DIRS += $(DOLBY_PATH)/sepolicy/vendor \
+    $(DOLBY_PATH)/sepolicy/vendor/vision
 
 # Framework compatibility matrix for the AIDL DMS HAL
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
     $(DOLBY_PATH)/configs/compatibility_matrix_dolby.xml \
-    $(DOLBY_PATH)/configs/compatibility_matrix_dolby_c2.xml
-    
+    $(DOLBY_PATH)/configs/compatibility_matrix_dolby_c2.xml \
+    $(DOLBY_PATH)/configs/compatibility_matrix_dolby_vision.xml
+
 # Configs
 PRODUCT_COPY_FILES += \
     $(DOLBY_PATH)/configs/dax-default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default.xml \
@@ -147,7 +149,9 @@ PRODUCT_PACKAGES += \
     libdolbyvision \
     libstagefright_foundation-atmos \
     libstagefright_foundation-swiitchoff \
-    vendor.dolby.dvs@1.0
+    vendor.dolby.dvs@1.0 \
+    vendor.dolby.media.dvs-service.xml \
+    vendor.dolbyvision.media.c2.xml
 
 # Dolby Vision Codec2 store over AIDL (default2)
 PRODUCT_PACKAGES += \

@@ -1,0 +1,2 @@
+# Dolby Vision
+hal_client_domain(system_server, hal_dvs)

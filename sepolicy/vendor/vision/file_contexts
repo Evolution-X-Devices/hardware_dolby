@@ -1,0 +1,2 @@
+# Dolby Vision
+/(system/vendor|vendor)/bin/hw/dvs-hal-service    u:object_r:hal_dvs_default_exec:s0
