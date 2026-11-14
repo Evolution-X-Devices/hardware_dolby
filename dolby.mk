@@ -153,7 +153,7 @@ PRODUCT_PACKAGES += \
     vendor.dolby.media.dvs-service.xml \
     vendor.dolbyvision.media.c2.xml
 
-# Dolby Vision Codec2 store over AIDL (default2)
+# Dolby Vision Codec2 store over AIDL (default3)
 PRODUCT_PACKAGES += \
     android.hardware.media.c2-dolby-service
 

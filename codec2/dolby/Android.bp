@@ -4,7 +4,7 @@
 //
 
 // Serves the Dolby Vision Codec2 store (c2.dolby.store) as AIDL
-// IComponentStore/default2. The stock dolbycodec2 registers it over HIDL,
+// IComponentStore/default3. The stock dolbycodec2 registers it over HIDL,
 // which the framework does not list with media.c2.hal.selection=aidl.
 cc_binary {
     name: "android.hardware.media.c2-dolby-service",
