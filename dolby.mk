@@ -125,7 +125,8 @@ PRODUCT_PACKAGES += \
 # Dolby vision Proprietary blobs
 PRODUCT_COPY_FILES += \
     $(DOLBY_PATH)/proprietary/vendor/etc/dolby_vision.cfg:$(TARGET_COPY_OUT_VENDOR)/etc/dolby_vision.cfg \
-    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolbyvision.media.c2@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolbyvision.media.c2@1.0-service.rc
+    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolbyvision.media.c2@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolbyvision.media.c2@1.0-service.rc \
+    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.media.dvs-service-vision.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.media.dvs-service-vision.rc
 
 PRODUCT_PACKAGES += \
     c2.dolby.avc.dec \
@@ -133,11 +134,20 @@ PRODUCT_PACKAGES += \
     c2.dolby.client \
     c2.dolby.egl \
     c2.dolby.hevc.dec \
+    c2.dolby.hevc.enc \
     c2.dolby.hevc.sec.dec \
     c2.dolby.store \
+    dolbycodec2 \
+    dvs-hal-service \
+    libcodec2_aidl-dolby \
+    libcodec2_hal_common-aidl \
+    libcodec2_hidl_plugin-dolby \
+    libcodec2_vndk-aidl \
     libdolbyottcameracontrol \
     libdolbyvision \
-    dolbycodec2
+    libstagefright_foundation-atmos \
+    libstagefright_foundation-swiitchoff \
+    vendor.dolby.dvs@1.0
 
 # HIDL facade for the Qualcomm Codec2 store, for HIDL Dolby Vision decoders
 PRODUCT_PACKAGES += \
