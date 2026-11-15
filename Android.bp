@@ -330,6 +330,7 @@ cc_prebuilt_library_shared {
 	soc_specific: true,
 }
 
+// ---- Dolby Vision (Codec2) ----
 cc_prebuilt_library_shared {
     name: "c2.dolby.avc.dec",
     owner: "xiaomi",
@@ -342,8 +343,6 @@ cc_prebuilt_library_shared {
                 "proprietary/vendor/lib64/c2.dolby.avc.dec.so",
             ],
             shared_libs: [
-                "libstagefright_foundation-v33",
-                "libcodec2_shim",
                 "android.hardware.media.c2@1.0",
                 "libcodec2_hidl@1.0",
                 "libbase",
@@ -383,8 +382,6 @@ cc_prebuilt_library_shared {
                 "proprietary/vendor/lib64/c2.dolby.avc.sec.dec.so",
             ],
             shared_libs: [
-                "libstagefright_foundation-v33",
-                "libcodec2_shim",
                 "android.hardware.media.c2@1.0",
                 "libcodec2_hidl@1.0",
                 "libbase",
@@ -424,8 +421,6 @@ cc_prebuilt_library_shared {
                 "proprietary/vendor/lib64/c2.dolby.client.so",
             ],
             shared_libs: [
-                "libcodec2_hidl_shim",
-                "libcodec2_shim",
                 "libbase",
                 "liblog",
                 "libcodec2",
@@ -433,6 +428,9 @@ cc_prebuilt_library_shared {
                 "libutils",
                 "android.hardware.media.c2@1.0",
                 "libcodec2_hidl@1.0",
+                // Added NEEDED entry: exports the legacy objcpy() the client
+                // imports.
+                "libcodec2_shim",
                 "libhidlbase",
                 "libcutils",
                 "libstagefright_bufferpool@2.0.1",
@@ -466,6 +464,7 @@ cc_prebuilt_library_shared {
                 "liblog",
                 "libcutils",
                 "libstagefright_foundation",
+                "libnativewindow",
                 "libc++",
                 "libc",
                 "libm",
@@ -490,8 +489,45 @@ cc_prebuilt_library_shared {
                 "proprietary/vendor/lib64/c2.dolby.hevc.dec.so",
             ],
             shared_libs: [
-                "libstagefright_foundation-v33",
-                "libcodec2_shim",
+                "android.hardware.media.c2@1.0",
+                "libcodec2_hidl@1.0",
+                "libbase",
+                "libcodec2",
+                "libcodec2_vndk",
+                "libutils",
+                "libcodec2_soft_common",
+                "libcutils",
+                "liblog",
+                "libsfplugin_ccodec_utils",
+                "libstagefright_foundation",
+                "c2.dolby.store",
+                "c2.dolby.client",
+                "libstagefright_bufferpool@2.0.1",
+                "libdolbyvision",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    soc_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "c2.dolby.hevc.enc",
+    owner: "xiaomi",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/vendor/lib64/c2.dolby.hevc.enc.so",
+            ],
+            shared_libs: [
                 "android.hardware.media.c2@1.0",
                 "libcodec2_hidl@1.0",
                 "libbase",
@@ -531,8 +567,6 @@ cc_prebuilt_library_shared {
                 "proprietary/vendor/lib64/c2.dolby.hevc.sec.dec.so",
             ],
             shared_libs: [
-                "libstagefright_foundation-v33",
-                "libcodec2_shim",
                 "android.hardware.media.c2@1.0",
                 "libcodec2_hidl@1.0",
                 "libbase",
@@ -659,39 +693,10 @@ cc_prebuilt_library_shared {
     soc_specific: true,
 }
 
-cc_prebuilt_binary {
-    name: "dolbycodec2",
-    owner: "xiaomi",
-    target: {
-        android_arm64: {
-            srcs: [
-                "proprietary/vendor/bin/hw/dolbycodec2",
-            ],
-            shared_libs: [
-                "libbase",
-                "liblog",
-                "libcodec2",
-                "libcodec2_vndk",
-                "libutils",
-                "android.hardware.media.c2@1.0",
-                "libcodec2_hidl@1.0",
-                "libavservices_minijail_vendor",
-                "libbinder",
-                "libhidlbase",
-                "c2.dolby.store",
-                "libc++",
-                "libc",
-                "libm",
-                "libdl",
-            ],
-        },
-    },
-    compile_multilib: "64",
-    strip: {
-        none: true,
-    },
-    prefer: true,
-    relative_install_path: "hw",
+prebuilt_etc_xml {
+    name: "vendor.dolbyvision.media.c2.xml",
+    src: "vendor.dolbyvision.media.c2.xml",
+    filename_from_src: true,
+    sub_dir: "vintf/manifest",
     soc_specific: true,
 }
-

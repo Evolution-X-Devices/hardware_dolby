@@ -43,7 +43,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     init.dolby.rc
 
-# Overlays    
+# Overlays
 PRODUCT_PACKAGES += \
     DolbyFrameworksResCommon
 
@@ -131,24 +131,37 @@ PRODUCT_PACKAGES += \
     libswvqe \
     libswdap
 
-# Dolby vision Proprietary blobs
-PRODUCT_COPY_FILES += \
-    $(DOLBY_PATH)/proprietary/vendor/etc/dolby_vision.cfg:$(TARGET_COPY_OUT_VENDOR)/etc/dolby_vision.cfg \
-    $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolbyvision.media.c2@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolbyvision.media.c2@1.0-service.rc
+# ==============================================================================
+# Dolby Vision (AIDL Codec2). Set TARGET_INCLUDES_DolbyVision := true in the
+# device tree before inheriting this makefile.
+# ==============================================================================
+ifeq ($(TARGET_INCLUDES_DolbyVision),true)
 
+# SEPolicy for Vision
+BOARD_VENDOR_SEPOLICY_DIRS += $(DOLBY_PATH)/sepolicy/vendor/vision
+
+# Dolby Vision config
+PRODUCT_COPY_FILES += \
+    $(DOLBY_PATH)/configs/media_codecs_dolby_vision.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_vision.xml \
+    $(DOLBY_PATH)/proprietary/vendor/etc/dolby_vision.cfg:$(TARGET_COPY_OUT_VENDOR)/etc/dolby_vision.cfg
+
+# Dolby Vision C2 components, engines and services
+# libcodec2_shim (hardware/lineage/compat) exports the legacy objcpy() symbol
+# imported by c2.dolby.client, which lists it as NEEDED.
 PRODUCT_PACKAGES += \
     c2.dolby.avc.dec \
     c2.dolby.avc.sec.dec \
     c2.dolby.client \
     c2.dolby.egl \
     c2.dolby.hevc.dec \
+    c2.dolby.hevc.enc \
     c2.dolby.hevc.sec.dec \
     c2.dolby.store \
+    libcodec2_shim \
     libdolbyottcameracontrol \
     libdolbyvision \
-    dolbycodec2
+    vendor.dolbyvision.media.c2-service \
+    vendor.dolbyvision.media.c2-qti-hidl-service \
+    vendor.dolbyvision.media.c2.xml
 
-# Shim
-PRODUCT_PACKAGES += \
-    libcodec2_hidl_shim.vendor
-
+endif

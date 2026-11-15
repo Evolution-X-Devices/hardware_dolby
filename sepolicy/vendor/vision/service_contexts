@@ -1,0 +1,2 @@
+# Dolby Vision Codec2 store (default9 is the Dolby audio store)
+android.hardware.media.c2.IComponentStore/default10   u:object_r:hal_codec2_service:s0

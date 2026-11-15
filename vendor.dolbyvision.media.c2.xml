@@ -1,0 +1,15 @@
+<manifest version="1.0" type="device">
+    <!-- Registered by /vendor/bin/hw/vendor.dolbyvision.media.c2-service (Dolby Vision codecs) -->
+    <hal format="aidl">
+        <name>android.hardware.media.c2</name>
+        <version>1</version>
+        <fqname>IComponentStore/default10</fqname>
+    </hal>
+    <!-- Registered by /vendor/bin/hw/vendor.dolbyvision.media.c2-qti-hidl-service: the QTI
+         store over HIDL, which c2.dolby.client.so connects to -->
+    <hal format="hidl">
+        <name>android.hardware.media.c2</name>
+        <transport>hwbinder</transport>
+        <fqname>@1.2::IComponentStore/default</fqname>
+    </hal>
+</manifest>

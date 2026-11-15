@@ -1,0 +1,57 @@
+// SPDX-License-Identifier: Apache-2.0
+
+// AIDL Codec2 service for the Dolby Vision store (c2.dolby.store).
+cc_binary {
+    name: "vendor.dolbyvision.media.c2-service",
+    vendor: true,
+    relative_install_path: "hw",
+    compile_multilib: "64",
+    init_rc: ["vendor.dolbyvision.media.c2-service.rc"],
+
+    defaults: [
+        "libcodec2-hidl-defaults",
+        "libcodec2-aidl-defaults",
+    ],
+
+    srcs: ["DolbyC2Service.cpp"],
+
+    cflags: [
+        "-DDOLBY_C2_INSTANCE=\"default10\"",
+    ],
+
+    shared_libs: [
+        // First, so its RefBase null guards take effect (as the HIDL services).
+        "libshim_dolby",
+        "c2.dolby.store",
+        "libbase",
+        "libbinder",
+        "libbinder_ndk",
+        "libcodec2",
+        "libcodec2_vndk",
+        "libhidlbase",
+        "liblog",
+    ],
+}
+
+// HIDL bridge exposing the AIDL-only QTI store to c2.dolby.client.
+cc_binary {
+    name: "vendor.dolbyvision.media.c2-qti-hidl-service",
+    vendor: true,
+    relative_install_path: "hw",
+    compile_multilib: "64",
+    init_rc: ["vendor.dolbyvision.media.c2-qti-hidl-service.rc"],
+
+    defaults: [
+        "libcodec2-hidl-defaults",
+    ],
+
+    srcs: ["QtiC2HidlStore.cpp"],
+
+    shared_libs: [
+        "libavservices_minijail",
+        "libbase",
+        "libbinder",
+        "libhidlbase",
+        "liblog",
+    ],
+}

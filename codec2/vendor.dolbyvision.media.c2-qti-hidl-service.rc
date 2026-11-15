@@ -1,0 +1,7 @@
+# Same identity as vendor-qti-media-c2-hal-1-0, which serves this store over AIDL.
+service vendor-dolbyvision-media-c2-qti-hidl-service /vendor/bin/hw/vendor.dolbyvision.media.c2-qti-hidl-service
+    class hal
+    user mediacodec
+    group mediadrm camera drmrpc system
+    ioprio rt 4
+    task_profiles ProcessCapacityHigh
