@@ -1,61 +1,233 @@
-AOSPA Dolby
-==============
+Dolby (AIDL)
+============
 
-Getting Started
----------------
-For dolby media codecs to work add this line in your media codecs config (should be in vendor partition) :-
+Dolby Atmos / DAX3 for Evolution-X, branch `cnb-aidl`. Used by
+`device_xiaomi_sm8450-common` (`cnb-6.6`, POCO F5 / marble).
 
-```bash
+Stack
+-----
+- DMS: `vendor.dolby.dms` AIDL (`IDms/default`), `vendor.dolby.dms.service`
+  + `libdmshal`, `libdlbdsservice`, `libdapparamstorage`, `libdlbpreg`
+- Effects (audio effect HAL V2): `libswdapaidl` (software DAP),
+  `libdlbvolaidl` (volume listener), `libswgamedapaidl` (game DAP)
+- Codec2: `vendor.dolby.media.c2-default-service-dax` (AC3/EAC3/EAC3-JOC/AC4)
+- App: XiaomiDolby (Lunaris-based), replaces MusicFX/AudioFX
+- Dolby Vision (optional, `TARGET_INCLUDES_DolbyVision`): HEVC/AVC decoders and
+  HEVC encoder (`c2.dolby.*`), served over AIDL, see "Dolby Vision" below
+
+Blobs
+-----
+DAX3_3.7.0.8_r1. The whole stack is one Sony drop, the Xperia 1 VII (pdx256):
+DMS (`vendor.dolby.dms.service`, `libdmshal`, `libdlbdsservice`,
+`libdapparamstorage`, `libdlbpreg`, `vendor.dolby.dms-V1-ndk`,
+`vendor.dolby.hardware.dms@2.0`), Codec2 (`vendor.dolby.media.c2-default-service-dax`,
+`libcodec2_store_dolby`, `libdeccfg`, the AC-4 and DD+ decoders), the effect
+libraries and the tuning files. Every host library is the build the effect
+libraries were linked against, so no part of the stack is a different Dolby
+build than its neighbours.
+https://github.com/PinkSerenity/proprietary_vendor_sony_pdx256 (lineage-22.1)
+
+The only blob not from that drop is
+`libaudio_aidl_conversion_common_ndk_prebuilt.so`, from kunzite
+(https://github.com/kunzite-stuff/vendor_xiaomi_kunzite, cnb). It is the same
+conversion library under a different name, because AOSP already builds a module
+called `libaudio_aidl_conversion_common_ndk`, so the Sony file cannot be
+installed under its own name. It exports the same 178 symbols as the Sony one,
+including the three that `libswdapaidl` and `libswgamedapaidl` import.
+
+DAP: only the software DAP is shipped (`libswdapaidl`, `libswgamedapaidl`).
+It processes on the CPU and needs no DSP or GEF support.
+
+- No hardware DAP (`libhwdapaidl`) is shipped. It drives the DSP through GEF.
+  The pdx256 build expects the new GEF interface, and the vendor
+  `libqtigefar` (Sony-era) does not provide it, so parameters never apply and
+  the device callback crashes the audio HAL. The kunzite build runs, but it
+  re-pushes the full parameter set to every output device class on each
+  parameter update (about 400 batches in 50 seconds after boot in one test
+  log, which floods the audio HAL log), and PAL stores the baseline under a
+  graph that has no DAP module, so the deep-buffer stream never receives it.
+  The sm8850 build uses module tag `0x0C000033`, which the marble ACDB does not
+  carry, and installs under the same file name.
+- Both effect libraries link `libaudio_aidl_conversion_common_ndk_prebuilt`
+  (shipped here).
+- The tuning is read from `/vendor/etc/dolby/dax-default.xml`.
+- Cross-checked against `paulblazer15/vendor_sony_dolby` (17, XQ-FS72): every
+  Dolby blob there has the same BuildId as the pdx256 one. It only differs in
+  carrying the `propIsMatched` patch below, and in shipping `liboem_specific.so`
+  (a single `dd_data` symbol that nothing in this stack links), which is not
+  taken.
+
+Binary fixes applied to the pdx256 `libswdapaidl.so` / `libswgamedapaidl.so`:
+- `DlbGenClass2::propIsMatched()` forced true (`mov w0, w19` -> `mov w0, #1`).
+  Same patch as vendor_sony_dolby 5dd32bc, same offsets
+  (`0x2a81fc` / `0x2982a4`).
+
+Properties (`dolby.mk`):
+- `ro.vendor.dolby.dax.version=DAX3_3.7.0.8_r1`
+- `ro.vendor.dolby.dap_bypassed_on_tiny_volume=0`: the default (1) latches DAP
+  into bypass at boot while the volume is low and the profiles do nothing
+  (found on emerald, crdroid-17 b868d52).
+
+Init: `dms-service.rc` declares `interface aidl vendor.dolby.dms.IDms/default`.
+
+App fixes (from halcyon `packages_halcyon_apps_Dolby`):
+- Never `setEnabled(false)` on the DAP: AudioFlinger STOPs the HAL effect, the
+  drain returns -ENODATA, EffectHalAidl maps it to DEAD_OBJECT and the
+  instance cannot be re-enabled. Use bypass param 18 + enable param instead.
+- Profile parameters are write-only registers on this DAP (read back 0), so
+  the getters read the saved prefs first.
+
+Tuning (marble stock)
+---------------------
+`configs/dax-default.xml` is the stock marble image's file
+(missi_phone_cn V816.0.14.0.UMRCNXM), so profiles, IEQ and speaker/headphone
+tuning are marble's. It is the older 3.3.0 format; the pdx256 files are 3.4.0.
+The pdx256 `libdlbdsservice` parser is version-aware and reads 3.3.0 through
+its own path, so it is used as is:
+
+| | pdx256 (3.4.0) | marble stock (3.3.0) |
+|---|---|---|
+| format / tool version | 3.4.0 / 3.6.0 | 3.3.0 / 3.5.0 |
+| IEQ preset ids | numeric, `id="2" name="balanced"` | string, `id="ieq_balanced"` |
+| IEQ reference in profile | `<include ieq_preset="2"/>` | `<include preset="ieq_balanced"/>` |
+| profiles | 0-7 | 0-8 (8 = Voice) |
+| `headphone-virtualizer-mode`, `speaker-virtualizer-mode`, `advanced-{headphone,speaker}-virtualizer-rendering-config`, `advanced-speaker-virtualizer-start-bin` | present | absent (3.4-only) |
+| `speaker_landscape_180` tuning | present | absent |
+
+What the parser does (disassembly of `libdlbdsservice.so`):
+- `parsePreset` and `parseProfileEndpoint` compare the file version with
+  `3.3.0`: an exact 3.3.0 file takes the `preset` include attribute (string
+  ids), any other version takes `ieq_preset` (numeric ids).
+- `parseProfile` gates the virtualizer mode / rendering config tags on `3.4.`,
+  so a 3.3.0 file without them is expected.
+- `getIeqPresetIdByName` maps preset names by substring (`balanced` -> 2
+  seen), which is how string ids such as `ieq_balanced` resolve to the 1/2/3
+  the app sends.
+
+So the file does not need converting. Keep the header at exactly `3.3.0`: any
+other version selects the `ieq_preset` path and breaks the includes. Static
+analysis only, not confirmed on device:
+
+```
+logcat -s dolby DolbyManagerService TuningFileParser | grep -iE "XML|IEQ|Invalid"
+```
+`XML parses error` or `Invalid IEQ Preset Id` would mean it was rejected.
+
+Note: marble's volume leveler is enabled in 26 profile/endpoint entries.
+vendor_sony_dolby disables it in all of them (`volume-leveler-enable` ->
+false); not done here, to keep stock tuning.
+
+Dolby Vision
+------------
+Optional, off by default. Set `TARGET_INCLUDES_DolbyVision := true` before
+`hardware/dolby/dolby.mk` is inherited. Everything below is behind that flag.
+
+Blobs: the marble stock image (missi_phone_cn V816.0.14.0.UMRCNXM, Android 14),
+from https://github.com/gm-stuffs/redmi_marble_dump. They are HIDL Codec2 1.0
+blobs: `c2.dolby.{avc.dec,avc.sec.dec,client,egl,hevc.dec,hevc.enc,hevc.sec.dec,store}`,
+`libdolbyvision` and `libdolbyottcameracontrol` (64-bit only). They link the
+plain `libstagefright_foundation`, and none of them lists `libcodec2_shim` or
+`libcodec2_hidl_shim` as NEEDED. `dolby_vision.cfg` is also marble's (Tmax 900)
+and `media_codecs_dolby_vision.xml` is the decoder/encoder list.
+
+The stock services are not used. `media.c2.hal.selection=aidl` on 6.6 makes
+`Codec2Client` list AIDL stores only, and the QTI store is AIDL only, so two
+services bridge the HIDL blobs:
+
+- `vendor.dolbyvision.media.c2-service` (`codec2/DolbyC2Service.cpp`) serves
+  `c2.dolby.store` as AIDL `android.hardware.media.c2.IComponentStore/default10`.
+  `default9` is the Dolby audio store and `default2` the QTI audio store.
+  `c2.dolby.client` converts each `C2Work` with the HIDL `objcpy()`, which only
+  accepts HIDL-pool-backed blocks, so the service copies every linear input
+  buffer into a `VER_HIDL` pool block before the Dolby component queues it.
+  The original AIDL-backed buffers are kept by frame index and put back into
+  each work item (done or flushed) before the AIDL listener converts it, as
+  the copies have no AIDL `BufferPoolData`.
+- `vendor.dolbyvision.media.c2-qti-hidl-service` (`codec2/QtiC2HidlStore.cpp`)
+  loads `libqcodec2_core.so` and serves the QTI store over HIDL
+  `IComponentStore/default`, which is where `c2.dolby.client` looks for the
+  hardware decoder. The framework never lists it. It calls the store factory
+  through vtable slot 2, so it depends on the layout of the vendor
+  `libqcodec2_core.so`.
+
+`c2.dolby.client` imports `objcpy()` under its old, pre-template mangled name.
+`libcodec2_shim` (`hardware/lineage/compat`) exports it and forwards to the
+platform function. The blobs do not list it as NEEDED, so it is in the
+client's `shared_libs` for `check_elf` and the c2-service links it explicitly. Do not add a shim that redefines it with another signature: it would
+win symbol resolution and truncate the sender pointer.
+
+Device wiring, in addition to the audio steps below:
+- `TARGET_INCLUDES_DolbyVision := true`
+- `media.c2.hal.selection=aidl`
+- include the Vision codecs next to the audio ones:
+  `<Include href="media_codecs_dolby_vision.xml" />`
+- `ro.vendor.display.dolbyvision.support=true`, read by the `hardware_qcom_display`
+  composer, so HWC advertises `Hdr::DOLBY_VISION` (the Dolby Vision tone mapping
+  runs in the Codec2 EGL pipeline, not in `libsdmextension`)
+- `mediacodec` may reach the framework sensor service (LightSense, ambient
+  adaptive tone mapping), see `sepolicy/vendor/mediacodec.te`
+
+Known issue: the QTI decoder can reject the output format the Dolby client
+sets. It logs `QC2V4l2Codec: ? is not a supported pixel format!` for format 34
+in surface mode, or `YV12 is not a supported pixel format!` in ByteBuffer
+mode, then `Failed to set resolution and buffer size for OUT port` and
+`Configuring hw component failed`. The stock A14 `libqcodec2_v4l2codec` has the
+same check and message, so it is not specific to the 6.6 libraries. Its V4L2
+pixel format names are NV12, NV12 UBWC, P010, TP10 UBWC and RGBA8888 UBWC, and
+`Created 0 filters for pipelined codec c2.qti.hevc.decoder` is logged for every
+session. `vendor.qc2.log.msg`, `vendor.qc2.log.trace` and
+`vendor.qc2.log.buffers` raise the QC2 logging.
+
+Debugging:
+
+```
+logcat -s dolby-c2-service dolbyvision-qti-c2-hidl DolbyC2Client C2DolbyHevcDec QC2V4l2Codec QC2Interface
+dumpsys media.codec | grep -i dolby
+```
+
+Device wiring
+-------------
+Inherit `hardware/dolby/dolby.mk` and keep the manifest/matrix variables
+`+=` in BoardConfig. `dolby.mk` installs VINTF manifests via
+PRODUCT_COPY_FILES, so set `BUILD_BROKEN_VINTF_PRODUCT_COPY_FILES := true`.
+Include the codecs from your media_codecs XMLs:
+
+```xml
 <Include href="media_codecs_dolby_audio.xml" />
 ```
 
-To build, add the dolby effects in your device's audio effects config then inherit the dolby config by adding this in your device's makefile :-
+Audio effects (`audio_effects_config.xml`, v2.0). The AIDL effect factory
+needs the Sony type UUID to resolve the effects:
 
-```bash
-$(call inherit-product, hardware/dolby/dolby.mk)
+```xml
+<library name="dap" path="libswdapaidl.so"/>
+<library name="dvl" path="libdlbvolaidl.so"/>
+<library name="gamedap" path="libswgamedapaidl.so"/>
+
+<effect name="dap" library="dap" uuid="9d4921da-8225-4f29-aefa-39537a04bcaa" type="fa81de0e-588b-11ed-9b6a-0242ac120002"/>
+<effect name="dlb_music_listener" library="dvl" uuid="40f66c8b-5aa5-4345-8919-53ec431aaa98" type="fa81de0e-588b-11ed-9b6a-0242ac120002"/>
+<effect name="dlb_ring_listener" library="dvl" uuid="21d14087-558a-4f21-94a9-5002dce64bce" type="fa81de0e-588b-11ed-9b6a-0242ac120002"/>
+<effect name="dlb_alarm_listener" library="dvl" uuid="6aff229c-30c6-4cc8-9957-dbfe5c1bd7f6" type="fa81de0e-588b-11ed-9b6a-0242ac120002"/>
+<effect name="gamedap" library="gamedap" uuid="3783c334-d3a0-4d13-874f-0032e5fb80e2" type="fa81de0e-588b-11ed-9b6a-0242ac120002"/>
 ```
 
-Now, moving hidl definitions in manifest to device trees is completely absurd so stop overriding manifest in your device trees an example for such would be :-
+marble keeps the stock `volume_listener` helpers on the post-process streams
+instead of `dlb_music_listener` (see `device_xiaomi_sm8450-common` a212830).
+vendor_sony_dolby additionally defines `dlb_notification_listener`
+(`1f0091e3-6ad8-40fe-9b09-5948f9a26e7e`); not used here.
 
-Changing these in BoardConfig makefile of your device tree:-
+The stock `libqtigefar` is kept, so the audio HAL must initialize its legacy
+API (`hardware_qcom_audio-ar` 2cd9e3cabc73).
 
-```bash
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE :=
-```
-And
+References
+----------
+- https://github.com/paulblazer15/vendor_sony_dolby (17)
+- https://github.com/halcyonproject/packages_halcyon_apps_Dolby (17.0)
+- https://github.com/emerald-crdroid13/android_device_xiaomi_emerald (crdroid-17)
+- https://github.com/gm-stuffs/redmi_marble_dump (Dolby Vision blobs, marble stock)
+- https://github.com/yildizahmet033-commits/hardware_dolby-acerhizm (rising-zeus-6.6, Vision services)
 
-```bash
-DEVICE_MANIFEST_FILE :=
-```
-
-To:-
-
-```bash
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE +=
-```
-And
-
-```bash
-DEVICE_MANIFEST_FILE +=
-```
-
-The only change done above is changing := symbol to += so that manifest can't be overriden from device tree in BoardConfig makefile.
-
-At the end an example commit to properly implement it in your device tree could be :-
-
-[**1**] https://github.com/Spanish-or-Vanish/android_device_xiaomi_sm8350-common/commit/8ece9a976087ed03f1adb447d0ac2a3f5f1a0d3c
-
-[**2**] https://github.com/Spanish-or-Vanish/android_device_xiaomi_sm8350-common/commit/2bdd047bfb5f23bd02e6d4db601a97c27e1506f9
- 
-#### Tip pick anyone for Reference:
-          https://dumps.tadiphone.dev/dumps/xiaomi/vili/-/blob/missi_phone_global-user-14-UKQ1.231207.002-V816.0.5.0.UKDMIXM-release-keys/aosp-device-tree/proprietary-files.txt#L2072
-          https://github.com/Spanish-or-Vanish/android_device_xiaomi_sm8350-common/commit/6a8f6aae347f9f864f17f2dfa5d541f83ab5b170
-          https://github.com/Spanish-or-Vanish/android_device_xiaomi_sm8350-common/commit/5c593cbd2c19d571b7e62ea4bd6b8c864a4e1d9e
-
-# Credits:
- * [**HELLBOY017**](https://github.com/HELLBOY017)
- * [**adithya2306**](https://github.com/adithya2306)
- * [**johnmart19**](https://github.com/johnmart19)
- * [**userariii**](https://github.com/userariii)
- * [**saku-bruh**](https://github.com/saku-bruh)
- * [**ahnet-69 · he/him**](https://github.com/ahnet-69)
+Credits
+-------
+HELLBOY017, adithya2306, johnmart19, userariii, saku-bruh, ahnet-69,
+paulblazer15, Halcyon Project, FlamingoOS / AOSPA (app base)

@@ -1,6 +1,4 @@
-allow mediacodec hal_dms_hwservice:hwservice_manager find;
-binder_call(mediacodec, hal_dms_default)
-hal_client_domain(mediacodec, hal_dms)
+hal_client_domain(mediacodec, hal_aidl_dms)
 
 # Dolby Vision ambient light (LightSense -> ASensorManager)
 allow mediacodec fwk_sensor_hwservice:hwservice_manager find;
