@@ -10,6 +10,7 @@
 
 #define LOG_TAG "dolby-c2-service"
 
+#include <dlfcn.h>
 #include <signal.h>
 #include <string.h>
 
@@ -261,6 +262,25 @@ class HidlPoolComponent : public C2Component {
     const std::shared_ptr<InputRegistry> mRegistry;
 };
 
+// The framework creates the block pools for the HidlPoolComponent it holds, while
+// the Dolby component looks them up as itself, so keep the wrapper of each one.
+std::mutex gWrappersMutex;
+std::map<const C2Component*, std::weak_ptr<const C2Component>> gWrappers;
+
+void registerWrapper(const C2Component* base, const std::shared_ptr<C2Component>& wrapper) {
+    std::lock_guard<std::mutex> lock(gWrappersMutex);
+    for (auto it = gWrappers.begin(); it != gWrappers.end();) {
+        it = it->second.expired() ? gWrappers.erase(it) : std::next(it);
+    }
+    gWrappers[base] = wrapper;
+}
+
+std::shared_ptr<const C2Component> findWrapper(const C2Component* base) {
+    std::lock_guard<std::mutex> lock(gWrappersMutex);
+    auto it = gWrappers.find(base);
+    return it == gWrappers.end() ? nullptr : it->second.lock();
+}
+
 // Wraps every component the Dolby store creates in a HidlPoolComponent.
 class HidlPoolComponentStore : public C2ComponentStore {
   public:
@@ -295,7 +315,9 @@ class HidlPoolComponentStore : public C2ComponentStore {
         if (status != C2_OK) {
             return status;
         }
+        const C2Component* key = base.get();
         *component = std::make_shared<HidlPoolComponent>(std::move(base), mPool);
+        registerWrapper(key, *component);
         return C2_OK;
     }
 
@@ -344,6 +366,33 @@ class HidlPoolComponentStore : public C2ComponentStore {
 };
 
 }  // namespace
+
+namespace android {
+
+// Overrides the libcodec2_vndk function for the Dolby blobs: the executable comes
+// first in their symbol lookup.
+__attribute__((visibility("default"))) c2_status_t GetCodec2BlockPool(
+        C2BlockPool::local_id_t id, std::shared_ptr<const C2Component> component,
+        std::shared_ptr<C2BlockPool>* pool) {
+    using Function = decltype(&GetCodec2BlockPool);
+    static const Function real = [] {
+        void* lib = dlopen("libcodec2_vndk.so", RTLD_NOW);
+        CHECK(lib) << "dlopen libcodec2_vndk.so: " << dlerror();
+        auto symbol = reinterpret_cast<Function>(dlsym(
+                lib,
+                "_ZN7android18GetCodec2BlockPoolEmNSt3__110shared_ptrIK11C2ComponentEE"
+                "PNS1_I11C2BlockPoolEE"));
+        CHECK(symbol) << "dlsym GetCodec2BlockPool: " << dlerror();
+        return symbol;
+    }();
+
+    if (std::shared_ptr<const C2Component> wrapper = findWrapper(component.get())) {
+        component = std::move(wrapper);
+    }
+    return real(id, std::move(component), pool);
+}
+
+}  // namespace android
 
 static constexpr int kThreadCount = 8;
 

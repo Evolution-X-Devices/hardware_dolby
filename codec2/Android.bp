@@ -19,6 +19,11 @@ cc_binary {
         "-DDOLBY_C2_INSTANCE=\"default10\"",
     ],
 
+    // The service's GetCodec2BlockPool() has to be visible to the Dolby blobs.
+    ldflags: [
+        "-Wl,--export-dynamic-symbol=_ZN7android18GetCodec2BlockPoolEmNSt3__110shared_ptrIK11C2ComponentEEPNS1_I11C2BlockPoolEE",
+    ],
+
     shared_libs: [
         // First, so its RefBase null guards take effect (as the HIDL services).
         "libshim_dolby",
