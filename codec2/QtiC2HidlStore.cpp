@@ -17,6 +17,7 @@
 
 #include <android-base/logging.h>
 #include <binder/ProcessState.h>
+#include <C2PlatformSupport.h>
 #include <codec2/hidl/1.2/ComponentStore.h>
 #include <hidl/HidlTransportSupport.h>
 #include <minijail.h>
@@ -44,6 +45,9 @@ int main() {
     using namespace ::android::hardware::media::c2::V1_2;
 
     signal(SIGPIPE, SIG_IGN);
+    // The HIDL listener cannot send blocks of AIDL bufferpool pools, which is what
+    // the platform creates with the AIDL HAL selected.
+    android::ForceCodec2HidlBufferPool();
     android::SetUpMinijail(kBaseSeccompPolicyPath, kExtSeccompPolicyPath);
 
     android::ProcessState::initWithDriver("/dev/vndbinder");
