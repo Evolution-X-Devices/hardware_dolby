@@ -4,3 +4,6 @@ service vendor-dolbyvision-media-c2-service /vendor/bin/hw/vendor.dolbyvision.me
     group camera mediadrm drmrpc
     ioprio rt 4
     task_profiles ProcessCapacityHigh
+    # The QTI bridge keeps HIDL bufferpool connections to the dead instance, which
+    # corrupt the invalidation queue of the next one. Start both from a clean state.
+    onrestart restart vendor-dolbyvision-media-c2-qti-hidl-service

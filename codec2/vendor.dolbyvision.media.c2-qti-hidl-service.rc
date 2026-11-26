@@ -5,3 +5,5 @@ service vendor-dolbyvision-media-c2-qti-hidl-service /vendor/bin/hw/vendor.dolby
     group mediadrm camera drmrpc system
     ioprio rt 4
     task_profiles ProcessCapacityHigh
+    # The Dolby service holds components and block pools of this process.
+    onrestart restart vendor-dolbyvision-media-c2-service
