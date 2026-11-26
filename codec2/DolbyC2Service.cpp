@@ -423,7 +423,11 @@ int main() {
             ::ndk::SharedRefBase::make<utils::ComponentStore>(c2Store);
     const std::string instance =
             std::string(IComponentStore::descriptor) + "/" + DOLBY_C2_INSTANCE;
-    binder_exception_t ex = AServiceManager_addService(store->asBinder().get(), instance.c_str());
+    // Hold the binder for the life of the process. Without this, only remote
+    // references keep it alive, and an unbalanced release would free it under
+    // the next transaction.
+    const ::ndk::SpAIBinder binder = store->asBinder();
+    binder_exception_t ex = AServiceManager_addService(binder.get(), instance.c_str());
     CHECK_EQ(ex, EX_NONE) << "Cannot register " << instance;
     LOG(INFO) << "Registered " << instance;
 
